@@ -1427,15 +1427,17 @@
   document.addEventListener('scroll', syncFromScroll, { passive: true, capture: true });
   window.addEventListener('scroll', syncFromScroll, { passive: true });
 
-  document.body.setAttribute('tabindex', '-1');
-  document.body.style.outline = 'none';
-  function focusDeck() {
-    try { window.focus(); document.body.focus({ preventScroll: true }); } catch (_) {}
+  if (!PREVIEW_MODE) {
+    document.body.setAttribute('tabindex', '-1');
+    document.body.style.outline = 'none';
+    function focusDeck() {
+      try { window.focus(); document.body.focus({ preventScroll: true }); } catch (_) {}
+    }
+    document.addEventListener('mousedown', focusDeck);
+    document.addEventListener('pointerdown', focusDeck, { passive: true });
+    window.addEventListener('load', focusDeck);
+    focusDeck();
   }
-  document.addEventListener('mousedown', focusDeck);
-  document.addEventListener('pointerdown', focusDeck, { passive: true });
-  window.addEventListener('load', focusDeck);
-  focusDeck();
 
   var touchStartX = 0;
   var touchStartY = 0;

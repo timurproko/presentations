@@ -9,6 +9,9 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg:      oklch(99% 0.002 240);
@@ -20,6 +23,7 @@
       --accent-dim: oklch(58% 0.18 255 / 0.08);
       --font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
       --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -57,12 +61,17 @@
       justify-content: space-between;
     }
     .nav-logo {
-      font-family: var(--font-display);
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
       color: var(--fg);
       text-decoration: none;
+      opacity: 0;
+      clip-path: inset(0 100% 0 0);
+      animation: navLogoReveal 720ms cubic-bezier(0.22, 1, 0.36, 1) 120ms forwards;
     }
     .nav-link {
       font-size: 14px;
@@ -73,6 +82,45 @@
     }
     .nav-link:hover { color: var(--fg); }
 
+    @keyframes navLogoReveal {
+      from {
+        opacity: 0;
+        clip-path: inset(0 100% 0 0);
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes contentReveal {
+      from {
+        opacity: 0;
+        translate: 0 12px;
+      }
+      to {
+        opacity: 1;
+        translate: 0 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nav-logo,
+      .hero .eyebrow,
+      .hero h1,
+      .intro,
+      .toolbar,
+      .card,
+      .empty {
+        opacity: 1;
+        translate: none;
+        clip-path: none;
+        animation: none;
+      }
+    }
+
     /* Shell */
     .shell {
       max-width: 1120px;
@@ -82,10 +130,20 @@
 
     /* Hero */
     .hero {
-      padding-bottom: 48px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 40px;
+      padding-bottom: 14px;
+      margin-bottom: 0;
     }
+    .hero .eyebrow,
+    .hero h1,
+    .intro,
+    .toolbar {
+      opacity: 0;
+      animation: contentReveal 640ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .hero .eyebrow { animation-delay: 180ms; }
+    .hero h1 { animation-delay: 260ms; }
+    .intro { animation-delay: 340ms; }
+    .toolbar { animation-delay: 430ms; }
 
     .eyebrow {
       display: inline-flex;
@@ -179,32 +237,37 @@
     /* Toolbar */
     .toolbar {
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
       gap: 14px;
       align-items: center;
       margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.15s;
     }
+    .toolbar:focus-within { border-bottom-color: var(--accent); }
     .count {
+      flex-shrink: 0;
+      padding-bottom: 8px;
       font-size: 13px;
       color: var(--muted);
       font-variant-numeric: tabular-nums;
       letter-spacing: -0.01em;
     }
     .search {
-      width: min(320px, 100%);
-      height: 38px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0 14px;
-      font-size: 14px;
+      flex: 1;
+      min-width: 0;
+      height: 34px;
+      border: 0;
+      border-radius: 0;
+      padding: 0 0 8px;
+      font-size: 13px;
       color: var(--fg);
-      background: var(--surface);
+      background: transparent;
       outline: none;
-      transition: border-color 0.15s;
+      appearance: none;
+      -webkit-appearance: none;
     }
     .search::placeholder { color: var(--muted); }
-    .search:focus { border-color: var(--accent); }
 
     /* Grid */
     .grid {
@@ -223,6 +286,8 @@
       overflow: hidden;
       text-decoration: none;
       color: var(--fg);
+      opacity: 0;
+      animation: contentReveal 640ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 520ms) both;
       transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
     }
     .card:hover {
@@ -317,11 +382,13 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
-      padding: 40px 24px;
+      gap: 12px;
+      padding: 44px 24px;
       background: transparent;
       border: none;
       box-shadow: none;
+      opacity: 0;
+      animation: contentReveal 640ms cubic-bezier(0.22, 1, 0.36, 1) 140ms both;
     }
     .empty-icon {
       flex-shrink: 0;
@@ -342,13 +409,35 @@
       line-height: 1.5;
       margin-top: 2px;
     }
+    .empty-action {
+      margin-top: 4px;
+      min-height: 34px;
+      padding: 0 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--fg);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .empty-action:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
 
     footer {
       border-top: 1px solid var(--border);
       margin-top: 48px;
       padding-top: 24px;
       color: var(--muted);
+      font-family: var(--font-mono);
       font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
       text-align: center;
     }
 
@@ -368,15 +457,15 @@
 
   <main class="shell">
     <section class="hero" aria-labelledby="page-title">
-      <p class="eyebrow">Presentation Library</p>
-      <h1 id="page-title">Talks &amp; decks</h1>
+      <p class="eyebrow">Portfolio</p>
+      <h1 id="page-title">Building Interactive Experiences</h1>
       <p class="intro">
-        Here you'll find my talks and presentation decks — open any of them with a click.
+        A collection of my work, experiments, and ideas across Unity, XR, and AI.
       </p>
     </section>
 
     <div class="toolbar" aria-label="Presentation controls">
-      <input class="search" id="search" type="search" placeholder="Search presentations" autocomplete="off" />
+      <input class="search" id="search" type="text" role="searchbox" placeholder="Search content" autocomplete="off" />
       <div class="count" id="count">Finding presentations…</div>
     </div>
 
@@ -463,6 +552,7 @@
           [item.title, item.description, item.file].join(" ").toLowerCase().includes(query)
         );
         render(filtered, query);
+        requestAnimationFrame(() => search.focus({ preventScroll: true }));
       });
     }
 
@@ -538,7 +628,8 @@
     }
 
     function render(items, query) {
-      count.textContent = `${items.length} presentation${items.length === 1 ? "" : "s"}`;
+      const visibleItemCount = query ? items.length : items.length + 1;
+      count.textContent = `${visibleItemCount} item${visibleItemCount === 1 ? "" : "s"}`;
       grid.innerHTML = "";
 
       // Show empty message (no profile card) when searching with no results
@@ -555,14 +646,24 @@
             <div class="empty-title">No presentations found.</div>
             <div class="empty-sub">Try a different search term.</div>
           </div>
+          <button class="empty-action" type="button">Clear search</button>
         `;
+        empty.querySelector(".empty-action").addEventListener("click", () => {
+          search.value = "";
+          render(presentations);
+          search.focus();
+        });
         grid.appendChild(empty);
         return;
       }
 
       // Profile card — only shown when no search is active
       if (query) {
-        items.forEach(item => grid.appendChild(makeCard(item)));
+        items.forEach((item, index) => {
+          const card = makeCard(item);
+          card.style.setProperty("--reveal-delay", `${140 + index * 60}ms`);
+          grid.appendChild(card);
+        });
         grid.querySelectorAll(".preview").forEach(p => ro.observe(p));
         return;
       }
@@ -590,11 +691,14 @@
           </div>
         </div>
       `;
+      profile.style.setProperty("--reveal-delay", "520ms");
       grid.appendChild(profile);
 
       const fragment = document.createDocumentFragment();
-      for (const item of items) {
-        fragment.appendChild(makeCard(item));
+      for (const [index, item] of items.entries()) {
+        const card = makeCard(item);
+        card.style.setProperty("--reveal-delay", `${580 + index * 70}ms`);
+        fragment.appendChild(card);
       }
       grid.appendChild(fragment);
       grid.querySelectorAll(".preview").forEach(p => ro.observe(p));
