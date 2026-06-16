@@ -90,7 +90,7 @@
   .slide.dark .kicker { color: color-mix(in oklab, var(--bg), transparent 45%); }
   .slide.hero .h-hero { font-size: clamp(88px, 10.42vw, 200px); line-height: 0.94; letter-spacing: -0.04em; }
   .deck-headline { font-family: var(--font-display); font-weight: 700; font-size: clamp(44px, 4.6vw, 88px); line-height: 0.98; letter-spacing: -0.03em; margin-bottom: clamp(28px, 2.8vw, 52px); max-width: min(1500px, 92vw); }
-  .deck-subhead { font-family: var(--font-body); font-weight: 500; font-size: clamp(20px, 1.8vw, 32px); line-height: 1.3; color: var(--muted); margin-top: clamp(-20px, -1.6vw, -32px); margin-bottom: clamp(28px, 2.8vw, 52px); max-width: min(1500px, 92vw); }
+  .deck-subhead { font-family: var(--font-body); font-weight: 400; font-size: clamp(16px, 1.25vw, 24px); line-height: 1.55; color: var(--muted); margin-top: clamp(-18px, -1vw, -10px); margin-bottom: clamp(28px, 2.8vw, 52px); max-width: min(1500px, 92vw); }
   .slide.dark .deck-subhead { color: color-mix(in oklab, var(--bg), transparent 30%); }
   .deck-section-label { font-family: var(--font-mono); font-size: clamp(12px, 0.9vw, 15px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 10px; }
   .slide.dark .deck-headline { color: var(--bg); }
@@ -103,28 +103,6 @@
   .slide.center .lead { margin-left: auto; margin-right: auto; }
   .cover-meta { margin-top: 56px; display: flex; flex-direction: column; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 24px; color: var(--muted); letter-spacing: 0.04em; text-align: center; }
   .cover-meta .speaker { font-family: var(--font-mono); font-weight: 500; font-size: 24px; color: var(--fg); letter-spacing: 0.16em; text-transform: uppercase; }
-  .cover-meta .speaker a { color: inherit; text-decoration: none; }
-  .cover-meta .speaker a,
-  .deck-credit a {
-    display: inline-block;
-    background-image:
-      linear-gradient(90deg, #ff4d6d, #ffb703, #3ddc97, #3a86ff, #b517ff, #ff4d6d),
-      linear-gradient(currentColor, currentColor);
-    background-repeat: no-repeat;
-    background-size: 0% 100%, 100% 100%;
-    background-position: 0% 50%, 0% 50%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    transition: background-size 520ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .cover-meta .speaker a:hover,
-  .cover-meta .speaker a:focus-visible,
-  .deck-credit a:hover,
-  .deck-credit a:focus-visible {
-    background-size: 220% 100%, 100% 100%;
-    animation: deckLinkRainbow 1400ms linear both;
-  }
   .cover-desc { font-size: clamp(12px, 0.9vw, 15px); letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.65; }
   .cover-rule { width: 240px; height: 6px; background: var(--accent); margin-top: 56px; }
   .slide.center .cover-rule { margin-left: auto; margin-right: auto; }
@@ -134,23 +112,85 @@
   .deck-counter.is-hidden { opacity: 0; }
   .deck-counter:not(.is-hidden) { opacity: 1; animation: revealFromBottom 520ms var(--ease-spring) 360ms both; }
   .deck-credit { position: fixed; bottom: 48px; left: clamp(56px, 6.67vw, 128px); font-family: var(--font-mono); font-size: 13px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); z-index: 100; opacity: 0; transition: opacity 500ms var(--ease-standard); }
-  .deck-credit a { color: var(--fg); text-decoration: none; pointer-events: auto; }
+  .deck-credit .speaker { color: var(--fg); }
   .deck-credit.is-hidden { opacity: 0; pointer-events: none; }
   .deck-credit:not(.is-hidden) { opacity: 1; animation: revealFromBottom 520ms var(--ease-spring) 500ms both; }
-  .slide-tag { position: absolute; top: 48px; left: clamp(56px, 6.67vw, 128px); font-family: var(--font-mono); font-size: 22px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); display: inline-block; }
-  .slide-tag::after { content: ''; display: block; height: 6px; background: var(--accent); margin-top: 14px; width: 100%; }
+  .deck-back {
+    position: fixed;
+    top: 24px;
+    left: clamp(56px, 6.67vw, 128px);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    z-index: 120;
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--surface), transparent 10%);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-decoration: none;
+    user-select: none;
+    box-shadow: 0 8px 24px rgba(17,17,17,0.08);
+    opacity: 0.92;
+    transition:
+      opacity 720ms var(--ease-standard),
+      background-color 720ms var(--ease-standard),
+      border-color 720ms var(--ease-standard),
+      color 720ms var(--ease-standard),
+      box-shadow 720ms var(--ease-standard);
+  }
+  .deck-back::before {
+    content: '←';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: color-mix(in oklab, var(--surface), var(--fg) 4%);
+    color: var(--fg);
+    font: inherit;
+    line-height: 1;
+    box-shadow: 0 1px 0 var(--border);
+    transition:
+      background-color 720ms var(--ease-standard),
+      border-color 720ms var(--ease-standard),
+      color 720ms var(--ease-standard),
+      box-shadow 720ms var(--ease-standard);
+  }
+  .slide-tag::before,
+  .deck-tag::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 999px;
+    flex: 0 0 auto;
+    transform-origin: left center;
+  }
+  .deck-back:hover,
+  .deck-back:focus-visible { color: var(--fg); }
+  .slide-tag { position: absolute; top: 48px; left: clamp(56px, 6.67vw, 128px); font-family: var(--font-mono); font-size: clamp(12px, 0.9vw, 15px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); display: inline-flex; align-items: center; gap: 12px; }
   .slide.hero .slide-tag { left: clamp(80px, 10vw, 192px); }
   .slide.center .slide-tag { left: 50%; transform: translateX(-50%); }
-  .slide.center .slide-tag::after { margin-left: auto; margin-right: auto; }
-  .slide.hero.center .slide-tag.inline { position: static; left: auto; transform: none; display: block; margin: 56px auto 0; text-align: center; width: max-content; }
+  .slide.hero.center .slide-tag.inline { position: static; left: auto; transform: none; display: block; margin: 48px auto 0; text-align: center; width: max-content; }
+  .slide.hero.center .slide-tag.inline::before { content: none; }
+  .slide.hero.center .slide-tag.inline::after { content: ''; display: block; width: 100%; height: 2px; margin-top: 10px; background: var(--accent); border-radius: 999px; }
   /* hide in-slide tags on non-hero content slides — chrome shows them dynamically */
   .slide:not(.hero) > .slide-tag { display: none; }
-  /* fixed chrome tag — pinned top-left, updates dynamically */
-  .deck-tag { position: fixed; top: 48px; left: clamp(56px, 6.67vw, 128px); font-family: var(--font-mono); font-size: 22px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); z-index: 50; opacity: 0; transition: opacity 500ms var(--ease-standard); pointer-events: none; }
-  .deck-tag::after { content: ''; display: block; height: 6px; background: var(--accent); margin-top: 14px; width: 100%; transform-origin: left center; }
+  /* fixed chrome tag — pinned under the back link, updates dynamically */
+  .deck-tag { position: fixed; top: 82px; left: clamp(56px, 6.67vw, 128px); font-family: var(--font-mono); font-size: clamp(12px, 0.9vw, 15px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); z-index: 50; opacity: 0; transition: opacity 500ms var(--ease-standard); pointer-events: none; display: inline-flex; align-items: center; gap: 12px; }
   .deck-tag.is-hidden { opacity: 0; }
   .deck-tag:not(.is-hidden) { opacity: 1; animation: revealFromTop 520ms var(--ease-spring) 180ms both; }
-  .deck-tag:not(.is-hidden)::after { animation: expandWidth 420ms var(--ease-spring) 560ms both; }
+  .deck-tag:not(.is-hidden)::before { animation: expandWidth 420ms var(--ease-spring) 560ms both; }
   @keyframes revealFromTop {
     from { opacity: 0; transform: translateY(-12px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -163,21 +203,9 @@
     from { transform: scaleX(0); }
     to   { transform: scaleX(1); }
   }
-  @keyframes deckLinkReveal {
-    from { background-size: 0% 100%; }
-    to   { background-size: 220% 100%; }
-  }
-  @keyframes deckLinkRainbow {
-    from { background-position: 0% 50%, 0% 50%; }
-    to   { background-position: 100% 50%, 0% 50%; }
-  }
   @media (prefers-reduced-motion: reduce) {
     .deck-counter:not(.is-hidden), .deck-credit:not(.is-hidden), .deck-tag:not(.is-hidden) { animation-duration: 1ms; animation-delay: 0ms; }
-    .deck-tag:not(.is-hidden)::after { animation-duration: 1ms; animation-delay: 0ms; }
-    .cover-meta .speaker a:hover,
-    .cover-meta .speaker a:focus-visible,
-    .deck-credit a:hover,
-    .deck-credit a:focus-visible { animation: none; background-size: 220% 100%; }
+    .deck-tag:not(.is-hidden)::before { animation-duration: 1ms; animation-delay: 0ms; }
   }
   .accent-rule { width: 36px; height: 3px; background: var(--accent); border-radius: 2px; margin-bottom: 28px; flex-shrink: 0; opacity: 0.9; }
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 96px; margin-top: 32px; max-width: 1664px; }
@@ -295,7 +323,7 @@
   .progression .step .idx { font-family: var(--font-mono); font-size: 18px; color: var(--accent); letter-spacing: 0.08em; }
   .progression .step.here { border: 1px solid #15803d; background: color-mix(in oklab, #15803d, transparent 93%); position: relative; }
   .progression .step.here .idx { color: #15803d; }
-  .progression .step.here::after { content: "NOW"; position: absolute; right: 24px; top: 50%; transform: translateY(-50%); font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.22em; color: #15803d; background: color-mix(in oklab, #15803d, transparent 83%); padding: 4px 12px; border-radius: 999px; }
+  .progression .step.here::after { content: "WE ARE HERE"; position: absolute; right: 24px; top: 50%; transform: translateY(-50%); font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.22em; color: #15803d; background: color-mix(in oklab, #15803d, transparent 83%); padding: 4px 12px; border-radius: 999px; }
   .slide-evolution .progression { gap: 14px; margin-top: 36px; }
   .pillars-venn { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; width: 100%; }
   .pillars-venn svg { width: auto; height: 100%; max-height: min(940px, 88vh); max-width: 96vw; display: block; overflow: visible; }
@@ -351,10 +379,30 @@
       color 720ms var(--ease-standard),
       box-shadow 720ms var(--ease-standard);
   }
+  .nav-hint .key-space {
+    font-size: 0.86em;
+    letter-spacing: 0.12em;
+    padding: 3px 7px 2px;
+  }
   .nav-hint .sep {
     color: color-mix(in oklab, var(--muted), transparent 35%);
     transition: color 720ms var(--ease-standard);
   }
+  body.chrome-on-dark .deck-back {
+    background: color-mix(in oklab, #111111, transparent 16%);
+    border-color: color-mix(in oklab, #f8f8f9, transparent 86%);
+    color: color-mix(in oklab, #f8f8f9, transparent 48%);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    opacity: 0.78;
+  }
+  body.chrome-on-dark .deck-back::before {
+    color: #f8f8f9;
+    background: color-mix(in oklab, #f8f8f9, transparent 90%);
+    border-color: color-mix(in oklab, #f8f8f9, transparent 86%);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.08);
+  }
+  body.chrome-on-dark .deck-back:hover,
+  body.chrome-on-dark .deck-back:focus-visible { color: #f8f8f9; opacity: 0.92; }
   body.chrome-on-dark .nav-hint {
     background: color-mix(in oklab, #111111, transparent 16%);
     border-color: color-mix(in oklab, #f8f8f9, transparent 86%);
@@ -513,7 +561,7 @@
     .h-hero,
     .slide.hero .h-hero { font-size: clamp(48px, 15vw, 72px); line-height: 0.98; letter-spacing: -0.035em; }
     .deck-headline { font-size: clamp(34px, 10vw, 48px); line-height: 1.03; margin-bottom: 24px; max-width: 100%; }
-    .deck-subhead { font-size: clamp(18px, 5vw, 24px); margin-top: 0; margin-bottom: 24px; max-width: 100%; }
+    .deck-subhead { font-size: clamp(15px, 4.2vw, 20px); line-height: 1.55; margin-top: 4px; margin-bottom: 24px; max-width: 100%; }
     .deck-section-label { font-size: 11px; margin-bottom: 8px; }
     .lead { font-size: clamp(22px, 6vw, 32px); margin-top: 24px; max-width: 100%; }
     .arrow-list { gap: 16px; margin-top: 24px; max-width: 100%; }
@@ -559,10 +607,12 @@
     .mobile-swipe-hint .swipe-counter { color: var(--fg); letter-spacing: 0.1em; }
     .mobile-swipe-hint .swipe-counter .total { color: var(--muted); }
     .deck-counter { bottom: 46px; right: 16px; font-size: 12px; letter-spacing: 0.1em; }
-    .deck-tag { top: 16px; left: 20px; font-size: 12px; letter-spacing: 0.12em; }
-    .deck-tag::after { height: 3px; margin-top: 8px; }
-    .slide-tag { top: 20px; left: 20px; font-size: 12px; letter-spacing: 0.12em; }
-    .slide-tag::after { height: 3px; margin-top: 8px; }
+    .deck-back { top: 12px; left: 12px; padding: 7px 10px; font-size: 10px; letter-spacing: 0.08em; gap: 7px; }
+    .deck-back::before { padding: 2px 7px; }
+    .slide-tag::before,
+    .deck-tag::before { width: 20px; height: 2px; }
+    .deck-tag { top: 50px; left: 20px; font-size: 11px; letter-spacing: 0.12em; gap: 8px; }
+    .slide-tag { top: 20px; left: 20px; font-size: 11px; letter-spacing: 0.12em; gap: 8px; }
     .slide.hero .slide-tag { left: 20px; }
     .slide.hero.center .slide-tag.inline { margin-top: 32px; }
 
@@ -646,21 +696,22 @@
     @page { size: 1920px 1080px; margin: 0; }
     html, body { background: #fff; display: block; overflow: visible; height: auto; }
     .slide { width: 1920px; height: 1080px; page-break-after: always; }
-    .nav-hint, .notes, .mobile-swipe-hint { display: none !important; }
+    .deck-back, .nav-hint, .notes, .mobile-swipe-hint { display: none !important; }
   }
 </style>
 </head>
 <body>
+<a class="deck-back" id="deckBack" href="../" aria-label="Back to main site">Back</a>
 <div class="deck-tag is-hidden" id="deckTag">Trend</div>
 <div class="deck-counter" id="deckCounter"><span class="num">01</span> &nbsp;/&nbsp; 17</div>
-<div class="deck-credit is-hidden" id="deckCredit"><a href="https://timurproko.com" target="_blank" rel="noopener">Timur Prokopiev</a> &nbsp;·&nbsp; AI for Unity Development</div>
+<div class="deck-credit is-hidden" id="deckCredit"><span class="speaker">Timur Prokopiev</span> &nbsp;·&nbsp; AI for Unity Development</div>
 <div class="mobile-swipe-hint" id="mobileSwipeHint" aria-hidden="true"><span class="swipe-prev">← Swipe</span><span class="swipe-counter"><span class="num">01</span> / <span class="total">17</span></span><span class="swipe-next">Swipe →</span></div>
-<div class="nav-hint" aria-hidden="true"><kbd>←</kbd><kbd>→</kbd> Slides <span class="sep">·</span> <kbd>Space</kbd> Next</div>
+<div class="nav-hint" aria-hidden="true"><kbd>←</kbd><kbd>→</kbd> Slides <span class="sep">·</span> <kbd class="key-space">Space</kbd> Next</div>
 <section class="slide hero center dark" data-screen-label="01 Cover" data-notes="Welcome. This talk is about how AI is reshaping Unity development — from autocomplete to agentic engineering. We'll cover what changed, what tools matter, and what skills you need now.">
   <div class="kicker">A Knowledge-Sharing Session</div>
   <h1 class="h-hero">AI for Unity<br/>Development</h1>
   <span class="slide-tag inline">2026</span>
-  <div class="cover-meta"><span class="speaker"><a href="https://timurproko.com" target="_blank" rel="noopener">Timur Prokopiev</a></span><span class="cover-desc">Engineering · Tooling · Workflows</span></div>
+  <div class="cover-meta"><span class="speaker">Timur Prokopiev</span><span class="cover-desc">Engineering · Tooling · Workflows</span></div>
 </section>
 
 <section class="slide slide-trend" data-screen-label="02 Trend" data-notes="The industry is moving from traditional engineering to vibe coding to agentic engineering. AI is no longer just a tool you call — it's a collaborator inside your loop. Development is shifting from manual control to guided automation.">
@@ -1420,6 +1471,7 @@
     var mh = document.getElementById('mobileSwipeHint');
     var cr = document.getElementById('deckCredit');
     var dt = document.getElementById('deckTag');
+    var db = document.getElementById('deckBack');
     var slideEl = slides[i];
     var isDark = slideEl && slideEl.classList.contains('dark');
     var isHero = slideEl && slideEl.classList.contains('hero');
@@ -1439,6 +1491,12 @@
     }
     if (dt && !isHero && inSlideTag) {
       dt.textContent = inSlideTag.textContent;
+    }
+    if (db) {
+      var isCover = i === 0;
+      db.textContent = isCover ? 'Back' : 'Home';
+      db.setAttribute('aria-label', isCover ? 'Back to main site' : 'Go to first slide');
+      db.setAttribute('href', isCover ? '../' : '#cover');
     }
 
     // Visibility: only the cover (slide 0) and hero slides hide chrome.
@@ -1493,6 +1551,15 @@
         window.print();
       }
     }
+  }
+
+  var deckBack = document.getElementById('deckBack');
+  if (deckBack) {
+    deckBack.addEventListener('click', function (e) {
+      if (active === 0) return;
+      e.preventDefault();
+      go(0);
+    });
   }
 
   window.addEventListener('keydown', onKey, true);
