@@ -531,6 +531,7 @@
       "ai-for-unity.html": "AI for Unity\nDevelopment",
       "cv.html": "Unity Developer\nCV"
     };
+    const DEFAULT_DESCRIPTION = "Agentic Engineering workflows for Unity Developers.";
 
     const grid = document.getElementById("presentations");
     const count = document.getElementById("count");
@@ -551,10 +552,11 @@
       const card = document.createElement("a");
       card.className = "card";
       card.href = item.file;
+      card.dataset.file = item.file;
       card.setAttribute("aria-label", `Open ${item.title}`);
       card.innerHTML = `
         <div class="preview" aria-hidden="true">
-          <iframe title="Preview of ${escapeHtml(item.title)}" src="${previewUrl(item.file)}" loading="lazy" tabindex="-1" scrolling="no"></iframe>
+          <iframe title="Preview of ${escapeHtml(item.title)}" data-src="${previewUrl(item.file)}" loading="eager" tabindex="-1" scrolling="no"></iframe>
         </div>
         <div class="meta">
           <h2 class="title">${escapeHtml(item.title).replace(/\n/g, ' ')}</h2>
@@ -582,11 +584,24 @@
           slides.forEach((s, i) => s.classList.toggle("active", i === 0));
           const cur = idoc.getElementById("deck-cur");
           if (cur) cur.textContent = "01";
+
+          updateCardMeta(
+            item.file,
+            idoc.querySelector("title")?.textContent?.trim(),
+            idoc.querySelector('meta[name="description"]')?.content?.trim()
+          );
         } catch (_) {}
       });
+      iframe.src = iframe.dataset.src;
 
       return card;
     }
+
+    window.addEventListener("message", event => {
+      const data = event.data;
+      if (!data || data.type !== "page-meta" || !data.file) return;
+      updateCardMeta(data.file, data.title, data.description);
+    });
 
     init();
 
@@ -660,7 +675,7 @@
     async function loadPresentationMeta(file) {
       const fallbackTitle = TITLE_OVERRIDES[file] || titleFromFile(file);
       try {
-        const response = await fetch(file, { cache: "no-store" });
+        const response = await fetch(cacheBustedUrl(file, "meta"), { cache: "no-store" });
         if (!response.ok) throw new Error("Unable to fetch presentation");
         const html = await response.text();
         const doc = new DOMParser().parseFromString(html, "text/html");
@@ -668,10 +683,10 @@
         const description =
           doc.querySelector('meta[name="description"]')?.content?.trim() ||
           doc.querySelector("h1")?.textContent?.trim() ||
-          "Agentic Engineering workflows for Unity Developers.";
+          DEFAULT_DESCRIPTION;
         return { file, title, description };
       } catch (error) {
-        return { file, title: fallbackTitle, description: "Agentic Engineering workflows for Unity Developers." };
+        return { file, title: fallbackTitle, description: DEFAULT_DESCRIPTION };
       }
     }
 
@@ -756,6 +771,28 @@
       grid.querySelectorAll(".preview").forEach(p => ro.observe(p));
     }
 
+    function updateCardMeta(file, title, description) {
+      const item = presentations.find(entry => entry.file === file);
+      if (item) {
+        if (title) item.title = title;
+        if (description) item.description = description;
+      }
+
+      document.querySelectorAll(`.card[data-file="${cssEscape(file)}"]`).forEach(card => {
+        if (title) {
+          card.setAttribute("aria-label", `Open ${title}`);
+          const titleElement = card.querySelector(".title");
+          if (titleElement) titleElement.textContent = title;
+          const iframe = card.querySelector("iframe");
+          if (iframe) iframe.title = `Preview of ${title}`;
+        }
+        if (description) {
+          const descriptionElement = card.querySelector(".description");
+          if (descriptionElement) descriptionElement.textContent = description;
+        }
+      });
+    }
+
     function normalizeHref(href) {
       if (!href || href.startsWith("?") || href.startsWith("#")) return null;
       try {
@@ -776,8 +813,12 @@
     }
 
     function previewUrl(file) {
+      return cacheBustedUrl(file, "preview=cover");
+    }
+
+    function cacheBustedUrl(file, query) {
       const separator = file.includes("?") ? "&" : "?";
-      return `${encodeURI(file)}${separator}preview=cover`;
+      return `${encodeURI(file)}${separator}${query}&v=${Date.now()}`;
     }
 
     function unique(values) {
@@ -791,6 +832,11 @@
         .filter(Boolean)
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ");
+    }
+
+    function cssEscape(value) {
+      if (window.CSS?.escape) return CSS.escape(value);
+      return String(value).replace(/["\\]/g, "\\$&");
     }
 
     function escapeHtml(value) {

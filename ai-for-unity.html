@@ -5,7 +5,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description" content="How AI is reshaping Unity development—from coding to fully agentic workflows." />
-<title>AI for Unity Development — Timur Prokopiev</title>
+<title>AI for Unity Development</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -1521,6 +1521,19 @@
     scrollToSlide(active, 'instant');
   });
 })();
+</script>
+<script>
+function publishPageMeta() {
+  if (window.parent === window) return;
+  window.parent.postMessage({
+    type: "page-meta",
+    file: location.pathname.split("/").pop(),
+    title: document.querySelector("title")?.textContent?.trim() || document.title,
+    description: document.querySelector('meta[name="description"]')?.content?.trim() || ""
+  }, "*");
+}
+publishPageMeta();
+window.addEventListener("load", publishPageMeta);
 </script>
 </body>
 </html>
