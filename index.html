@@ -255,6 +255,26 @@
       border-top: 1px solid var(--border);
       padding-top: 12px;
     }
+    .profile-about p {
+      margin: 0;
+    }
+    .profile-about p + p {
+      margin-top: 10px;
+    }
+    .profile-card {
+      align-self: start;
+    }
+    .profile-card .meta {
+      height: 100%;
+      min-height: 0;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+    }
+    .profile-card .profile-about {
+      min-height: 0;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+      mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+    }
     .button {
       display: inline-flex;
       justify-content: center;
@@ -315,6 +335,7 @@
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      align-items: start;
       gap: 20px;
     }
 
@@ -590,6 +611,7 @@
     const count = document.getElementById("count");
     const search = document.getElementById("search");
     let presentations = [];
+    let profileHeightFrame = 0;
 
     const ro = new ResizeObserver(entries => {
       for (const entry of entries) {
@@ -655,6 +677,8 @@
       if (!data || data.type !== "page-meta" || !data.file) return;
       updateCardMeta(data.file, data.title, data.description);
     });
+
+    window.addEventListener("resize", scheduleProfileCardHeightSync);
 
     init();
 
@@ -796,7 +820,7 @@
 
       // Profile card — first in the grid when no search
       const profile = document.createElement("a");
-      profile.className = "card";
+      profile.className = "card profile-card";
       profile.href = "https://www.linkedin.com/in/timurproko/";
       profile.target = "_blank";
       profile.rel = "noopener noreferrer";
@@ -810,10 +834,14 @@
               <p class="profile-roles">UX / XR / Unity Developer, Tech Artist, AI Agentic Engineer</p>
             </div>
           </div>
-          <p class="profile-about">Unity Developer with experience building interactive digital products and immersive real-time experiences. I work at the intersection of product design, 3D graphics, and XR development, translating complex ideas into clear, intuitive interactions.</p>
+          <div class="profile-about">
+            <p>Unity Developer with experience building interactive digital products and immersive real-time experiences. I work at the intersection of product design, 3D graphics, and XR development, translating complex ideas into clear, intuitive interactions.</p>
+            <p>I’ve designed and built products across web, mobile, wearables, embedded systems, and AR/VR/XR platforms, combining a design-led approach to interaction and visual systems with hands-on technical execution in Unity and real-time pipelines.</p>
+            <p>I focus on products and prototypes for training, medical visualization, and immersive applications—prioritizing usability, clarity, and performance from concept through implementation.</p>
+          </div>
           <div class="open-row">
             <span></span>
-            <span class="open-label">LinkedIn →</span>
+            <span class="open-label">LinkedIn ↗</span>
           </div>
         </div>
       `;
@@ -832,6 +860,19 @@
       }
       grid.appendChild(fragment);
       grid.querySelectorAll(".preview").forEach(p => ro.observe(p));
+      scheduleProfileCardHeightSync();
+    }
+
+    function scheduleProfileCardHeightSync() {
+      cancelAnimationFrame(profileHeightFrame);
+      profileHeightFrame = requestAnimationFrame(syncProfileCardHeight);
+    }
+
+    function syncProfileCardHeight() {
+      const profileCard = grid.querySelector(".profile-card");
+      const referenceCard = grid.querySelector(".card:not(.profile-card)");
+      if (!profileCard || !referenceCard) return;
+      profileCard.style.height = `${Math.ceil(referenceCard.getBoundingClientRect().height)}px`;
     }
 
     function updateCardMeta(file, title, description) {
@@ -854,6 +895,7 @@
           if (descriptionElement) descriptionElement.textContent = description;
         }
       });
+      scheduleProfileCardHeightSync();
     }
 
     function normalizeHref(href) {
