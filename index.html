@@ -132,11 +132,14 @@
       .intro,
       .toolbar,
       .card,
-      .empty {
+      .empty,
+      .footer-year {
         opacity: 1;
         translate: none;
         clip-path: none;
+        transform: none;
         animation: none;
+        transition: none;
       }
     }
 
@@ -548,6 +551,23 @@
       text-transform: uppercase;
       text-align: center;
     }
+    .footer-year {
+      display: inline-block;
+      min-width: 4ch;
+      opacity: 0;
+      clip-path: inset(0 0 100% 0);
+      transform: translateY(10px);
+      transition:
+        opacity 560ms cubic-bezier(0.22, 1, 0.36, 1),
+        clip-path 720ms cubic-bezier(0.22, 1, 0.36, 1),
+        transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, clip-path, transform;
+    }
+    footer.is-visible .footer-year {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+      transform: translateY(0);
+    }
 
     @media (max-width: 760px) {
       .shell { padding: 40px 20px 64px; }
@@ -593,7 +613,7 @@
     <section class="grid" id="presentations" aria-live="polite"></section>
 
     <footer>
-      2026
+      <span class="footer-year" data-footer-year aria-label="Current year">0000</span>
     </footer>
   </main>
 
@@ -610,8 +630,11 @@
     const grid = document.getElementById("presentations");
     const count = document.getElementById("count");
     const search = document.getElementById("search");
+    const footerYear = document.querySelector("[data-footer-year]");
     let presentations = [];
     let profileHeightFrame = 0;
+
+    setupFooterYearAnimation();
 
     const ro = new ResizeObserver(entries => {
       for (const entry of entries) {
@@ -622,6 +645,67 @@
         }
       }
     });
+
+    function setupFooterYearAnimation() {
+      if (!footerYear) return;
+
+      const footer = footerYear.closest("footer");
+      const targetYear = new Date().getFullYear();
+      const targetText = String(targetYear);
+      const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+      let hasAnimated = false;
+
+      footerYear.textContent = "0".repeat(targetText.length);
+      footerYear.setAttribute("aria-label", targetText);
+
+      function finish() {
+        footer?.classList.add("is-visible");
+        footerYear.textContent = targetText;
+      }
+
+      function reveal() {
+        if (hasAnimated) return;
+        hasAnimated = true;
+        footer?.classList.add("is-visible");
+
+        if (reducedMotion) {
+          footerYear.textContent = targetText;
+          return;
+        }
+
+        const duration = 1400;
+        const startTime = performance.now();
+        const easeOutCubic = progress => 1 - Math.pow(1 - progress, 3);
+
+        function tick(now) {
+          const progress = Math.min((now - startTime) / duration, 1);
+          const value = Math.round(targetYear * easeOutCubic(progress));
+          footerYear.textContent = String(value).padStart(targetText.length, "0");
+
+          if (progress < 1) {
+            requestAnimationFrame(tick);
+            return;
+          }
+
+          finish();
+        }
+
+        requestAnimationFrame(tick);
+      }
+
+      if (!("IntersectionObserver" in window) || !footer) {
+        reveal();
+        return;
+      }
+
+      const observer = new IntersectionObserver(entries => {
+        if (!entries.some(entry => entry.isIntersecting)) return;
+        observer.disconnect();
+        reveal();
+      }, { threshold: 0.35 });
+
+      observer.observe(footer);
+    }
 
     function makeCard(item) {
       const card = document.createElement("a");
