@@ -509,18 +509,21 @@
     .closing-stamp { margin-top: 32px; font-size: 12px; }
 
     .deck-credit,
+    .deck-counter,
     .nav-hint { display: none !important; }
     .mobile-swipe-hint {
       position: fixed;
       left: 50%;
       bottom: 12px;
       transform: translateX(-50%);
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      column-gap: clamp(12px, 4vw, 24px);
       z-index: 100;
-      padding: 7px 12px;
+      width: min(calc(100vw - 32px), 420px);
+      padding: 8px 14px;
       border: 1px solid var(--border);
       border-radius: 999px;
       background: color-mix(in oklab, var(--surface), transparent 10%);
@@ -534,6 +537,10 @@
       pointer-events: none;
       box-shadow: 0 8px 24px rgba(17,17,17,0.08);
     }
+    .mobile-swipe-hint .swipe-prev { justify-self: start; }
+    .mobile-swipe-hint .swipe-next { justify-self: end; }
+    .mobile-swipe-hint .swipe-counter { color: var(--fg); letter-spacing: 0.1em; }
+    .mobile-swipe-hint .swipe-counter .total { color: var(--muted); }
     .deck-counter { bottom: 46px; right: 16px; font-size: 12px; letter-spacing: 0.1em; }
     .deck-tag { top: 16px; left: 20px; font-size: 12px; letter-spacing: 0.12em; }
     .deck-tag::after { height: 3px; margin-top: 8px; }
@@ -562,7 +569,7 @@
     .trend-columns { grid-template-columns: 1fr; grid-template-rows: none; gap: 12px; margin-top: 18px; align-items: start; }
     .trend-col-label,
     .trend-panel { grid-column: 1 !important; grid-row: auto !important; }
-    .trend-col-label { font-size: clamp(18px, 5vw, 22px); text-align: left; margin-top: 12px; }
+    .trend-col-label { font-size: clamp(18px, 5vw, 22px); text-align: center; margin-top: 12px; }
     .trend-col-sep { display: none; }
     .trend-panel { width: min(100%, 260px); height: auto; max-height: none; justify-self: center; }
     .trend-col-label:nth-of-type(1) { grid-row: 1 !important; }
@@ -615,9 +622,9 @@
 </head>
 <body>
 <div class="deck-tag is-hidden" id="deckTag">Trend</div>
-<div class="deck-counter" id="deckCounter"><span class="num">01</span> &nbsp;/&nbsp; 20</div>
+<div class="deck-counter" id="deckCounter"><span class="num">01</span> &nbsp;/&nbsp; 17</div>
 <div class="deck-credit is-hidden" id="deckCredit"><a href="https://timurproko.com" target="_blank" rel="noopener">Timur Prokopiev</a> &nbsp;·&nbsp; AI for Unity Development</div>
-<div class="mobile-swipe-hint" aria-hidden="true">← Swipe left / right →</div>
+<div class="mobile-swipe-hint" id="mobileSwipeHint" aria-hidden="true"><span class="swipe-prev">← Swipe</span><span class="swipe-counter"><span class="num">01</span> / <span class="total">17</span></span><span class="swipe-next">Swipe →</span></div>
 <div class="nav-hint" aria-hidden="true"><kbd>←</kbd><kbd>→</kbd> Slides <span class="sep">·</span> <kbd>Space</kbd> Next</div>
 <section class="slide hero center dark" data-screen-label="01 Cover" data-notes="Welcome. This talk is about how AI is reshaping Unity development — from autocomplete to agentic engineering. We'll cover what changed, what tools matter, and what skills you need now.">
   <div class="kicker">A Knowledge-Sharing Session</div>
@@ -1380,6 +1387,7 @@
     active = i;
     updateNotes();
     var dc = document.getElementById('deckCounter');
+    var mh = document.getElementById('mobileSwipeHint');
     var cr = document.getElementById('deckCredit');
     var dt = document.getElementById('deckTag');
     var slideEl = slides[i];
@@ -1388,12 +1396,16 @@
     var inSlideTag = slideEl && slideEl.querySelector(':scope > .slide-tag');
 
     // Update content silently — no fade between slides.
+    var n = String(i + 1);
+    if (n.length < 2) n = '0' + n;
+    var t = String(slides.length);
+    if (t.length < 2) t = '0' + t;
     if (dc) {
-      var n = String(i + 1);
-      if (n.length < 2) n = '0' + n;
-      var t = String(slides.length);
-      if (t.length < 2) t = '0' + t;
       dc.innerHTML = '<span class="num">' + n + '</span> / ' + t;
+    }
+    if (mh) {
+      var counter = mh.querySelector('.swipe-counter');
+      if (counter) counter.innerHTML = '<span class="num">' + n + '</span> / <span class="total">' + t + '</span>';
     }
     if (dt && !isHero && inSlideTag) {
       dt.textContent = inSlideTag.textContent;

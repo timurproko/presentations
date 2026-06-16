@@ -81,12 +81,18 @@
         navLogoReveal 720ms cubic-bezier(0.22, 1, 0.36, 1) 120ms forwards,
         navLogoRainbow 1400ms linear 120ms both;
     }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
     .nav-link {
       font-size: 14px;
       color: var(--muted);
       text-decoration: none;
       letter-spacing: -0.01em;
       transition: color 0.15s;
+      white-space: nowrap;
     }
     .nav-link:hover { color: var(--fg); }
 
@@ -484,7 +490,10 @@
   <nav>
     <div class="nav-inner">
       <a href="#" class="nav-logo">Timur Prokopiev</a>
-      <a href="https://www.linkedin.com/in/timurproko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <div class="nav-links" aria-label="Navigation">
+        <a href="cv.html" class="nav-link">CV</a>
+        <a href="https://www.linkedin.com/in/timurproko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </div>
     </div>
   </nav>
 
@@ -517,9 +526,10 @@
   <script>
     // Static fallback for hosts that do not expose a directory listing/API.
     // This list was generated from the current folder when index.html was created.
-    const FALLBACK_PRESENTATIONS = ["ai-for-unity.html"];
+    const FALLBACK_PRESENTATIONS = ["ai-for-unity.html", "cv.html"];
     const TITLE_OVERRIDES = {
-      "ai-for-unity.html": "AI for Unity\nDevelopment"
+      "ai-for-unity.html": "AI for Unity\nDevelopment",
+      "cv.html": "Unity Developer\nCV"
     };
 
     const grid = document.getElementById("presentations");

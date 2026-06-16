@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Timur Prokopiev CV — Unity Developer with 15+ years of experience across real-time 3D development, UX, and technical art for Mobile, XR, and Desktop." />
+  <title>Timur Prokopiev – Unity Developer CV</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      oklch(99% 0.002 240);
+      --surface: oklch(100% 0 0);
+      --fg:      oklch(18% 0.012 250);
+      --muted:   oklch(54% 0.012 250);
+      --subtle:  oklch(72% 0.004 250);
+      --border:  oklch(92% 0.005 250);
+      --accent:  oklch(58% 0.18 255);
+      --accent-dim: oklch(58% 0.18 255 / 0.08);
+      --font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
+      --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a { color: inherit; }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: oklch(99% 0.002 240 / 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+    .nav-logo {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      text-decoration: none;
+      background: linear-gradient(90deg, #ff4d6d, #ffb703, #3ddc97, #3a86ff, #b517ff, #ff4d6d);
+      background-size: 220% 100%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      opacity: 0;
+      clip-path: inset(0 100% 0 0);
+      animation:
+        navLogoReveal 720ms cubic-bezier(0.22, 1, 0.36, 1) 120ms forwards,
+        navLogoRainbow 1400ms linear 120ms both;
+    }
+    .nav-links { display: flex; align-items: center; gap: 18px; }
+    .nav-link {
+      font-size: 14px;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      transition: color 0.15s;
+      white-space: nowrap;
+    }
+    .nav-link:hover { color: var(--fg); }
+
+    @keyframes navLogoReveal {
+      from { opacity: 0; clip-path: inset(0 100% 0 0); transform: translateY(4px); }
+      to { opacity: 1; clip-path: inset(0 0 0 0); transform: translateY(0); }
+    }
+    @keyframes navLogoRainbow { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+    @keyframes contentReveal {
+      from { opacity: 0; translate: 0 12px; }
+      to { opacity: 1; translate: 0 0; }
+    }
+
+    .shell {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 72px 32px 80px;
+    }
+    .hero { margin-bottom: 26px; }
+    .eyebrow,
+    .hero h1,
+    .intro,
+    .quick-meta,
+    .layout,
+    footer {
+      opacity: 0;
+      animation: contentReveal 640ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .eyebrow { animation-delay: 180ms; }
+    .hero h1 { animation-delay: 260ms; }
+    .intro { animation-delay: 340ms; }
+    .quick-meta { animation-delay: 430ms; }
+    .layout { animation-delay: 520ms; }
+    footer { animation-delay: 620ms; }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      margin: 0 0 16px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 20px;
+      height: 1.5px;
+      background: currentColor;
+      border-radius: 2px;
+    }
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 700;
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+    }
+    .intro {
+      max-width: 78ch;
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+    .quick-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 13px;
+      border: 1px solid oklch(88% 0.01 250);
+      border-radius: 999px;
+      background: oklch(96% 0.006 250);
+      color: oklch(30% 0.012 250);
+      font-size: 13px;
+      line-height: 1;
+      letter-spacing: 0.01em;
+      text-decoration: none;
+    }
+    a.chip:hover { border-color: var(--accent); color: var(--accent); }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 22px;
+      align-items: start;
+      margin-top: 30px;
+    }
+    .main-column,
+    .side-column { display: grid; gap: 20px; }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+    }
+    .card:hover {
+      border-color: oklch(85% 0.005 250);
+      box-shadow: 0 4px 24px oklch(18% 0.012 250 / 0.07);
+      transform: translateY(-2px);
+    }
+    .card-inner { padding: 22px; }
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    h2 {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+    }
+    .section-kicker {
+      color: var(--subtle);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .timeline { display: grid; gap: 18px; }
+    .role {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px 18px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .role:last-child { padding-bottom: 0; border-bottom: 0; }
+    .role h3 {
+      font-size: 15px;
+      line-height: 1.35;
+      letter-spacing: -0.015em;
+    }
+    .date {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.7;
+      text-align: right;
+      white-space: nowrap;
+    }
+    .company,
+    .role p {
+      grid-column: 1 / -1;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .company strong { color: var(--fg); font-weight: 500; }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .project {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: oklch(99% 0.002 240);
+    }
+    .project h3 {
+      font-size: 14px;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+    .project p,
+    .compact-list,
+    .cert-list {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .project-tag {
+      display: inline-flex;
+      margin-bottom: 10px;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .skill-groups { display: grid; gap: 16px; }
+    .skill-group h3 {
+      margin-bottom: 9px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+    .side-card .chip { min-height: 25px; padding: 0 10px; font-size: 12px; }
+
+    .contact-list,
+    .compact-list,
+    .cert-list { list-style: none; display: grid; gap: 10px; }
+    .contact-list a { color: var(--fg); text-decoration: none; }
+    .contact-list a:hover { color: var(--accent); }
+    .contact-label,
+    .cert-date {
+      display: block;
+      color: var(--subtle);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .contact-value,
+    .cert-title { display: block; color: var(--fg); font-size: 13px; letter-spacing: -0.005em; }
+    .cert-source { display: block; color: var(--muted); font-size: 12px; }
+    .compact-list li { padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+    .compact-list li:last-child { padding-bottom: 0; border-bottom: 0; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: 48px;
+      padding-top: 24px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    @media (max-width: 920px) {
+      .layout { grid-template-columns: 1fr; }
+      .side-column { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .side-card:first-child { grid-column: 1 / -1; }
+    }
+    @media (max-width: 760px) {
+      .shell { padding: 40px 20px 64px; }
+      .nav-inner { padding: 0 20px; }
+      .nav-links { gap: 12px; }
+      .projects,
+      .side-column { grid-template-columns: 1fr; }
+      .role { grid-template-columns: 1fr; }
+      .date { text-align: left; }
+    }
+    @media print {
+      nav, footer { display: none; }
+      body { background: white; }
+      .shell { max-width: none; padding: 0; }
+      .card { break-inside: avoid; box-shadow: none; }
+      .card:hover { transform: none; box-shadow: none; }
+      .hero, .layout, .quick-meta, footer, .intro, .eyebrow, .hero h1 { opacity: 1; animation: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .nav-logo,
+      .eyebrow,
+      .hero h1,
+      .intro,
+      .quick-meta,
+      .layout,
+      footer {
+        opacity: 1;
+        translate: none;
+        clip-path: none;
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Timur Prokopiev</a>
+      <div class="nav-links" aria-label="Navigation">
+        <a href="index.html" class="nav-link">Portfolio</a>
+        <a href="https://www.linkedin.com/in/timurproko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <section class="hero" aria-labelledby="page-title">
+      <p class="eyebrow">Curriculum Vitae</p>
+      <h1 id="page-title">Timur Prokopiev</h1>
+      <p class="intro">
+        Unity Developer with 15+ years of experience across real-time 3D development, UX, and technical art for Mobile, XR, and Desktop. I focus on scalable architectures, rendering pipeline optimization, custom editor tools, procedural generation, and spatial UI systems that accelerate production workflows.
+      </p>
+      <div class="quick-meta" aria-label="Profile highlights">
+        <span class="chip">Gdańsk, Poland</span>
+        <a class="chip" href="mailto:timur.proko@gmail.com">timur.proko@gmail.com</a>
+        <a class="chip" href="https://github.com/timurproko" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      </div>
+    </section>
+
+    <div class="layout">
+      <div class="main-column">
+        <section class="card" aria-labelledby="experience-title">
+          <div class="card-inner">
+            <div class="section-title">
+              <h2 id="experience-title">Work Experience</h2>
+              <span class="section-kicker">2010—2025</span>
+            </div>
+            <div class="timeline">
+              <article class="role">
+                <h3>Unity Developer</h3>
+                <div class="date">Aug 2025 – Dec 2025</div>
+                <p class="company"><strong>Vital Sports</strong> • Contract</p>
+                <p>Led the design and engineering of a market-ready MVP, managing the full product lifecycle.</p>
+              </article>
+              <article class="role">
+                <h3>Unity Developer</h3>
+                <div class="date">Sep 2024 – Aug 2025</div>
+                <p class="company"><strong>Code Craft</strong> • Contract</p>
+                <p>Developed cross-platform solutions for Android and iOS devices.</p>
+              </article>
+              <article class="role">
+                <h3>Unity Developer</h3>
+                <div class="date">Oct 2022 – Jun 2024</div>
+                <p class="company"><strong>SoftServe</strong> • Full-time</p>
+                <p>Developed enterprise-grade real-time training simulations for medical and automotive industries, focusing on reliability, performance, and R&amp;D-driven solutions.</p>
+              </article>
+              <article class="role">
+                <h3>Technical Artist</h3>
+                <div class="date">Oct 2020 – Sep 2022</div>
+                <p class="company"><strong>SoftServe</strong> • Full-time</p>
+                <p>Led user experience strategy for large-scale design systems and managed design teams.</p>
+              </article>
+              <article class="role">
+                <h3>Lead User Experience Designer</h3>
+                <div class="date">Nov 2016 – Oct 2020</div>
+                <p class="company"><strong>SoftServe</strong> • Full-time</p>
+                <p>Led user experience strategy for large-scale design systems and managed design teams.</p>
+              </article>
+              <article class="role">
+                <h3>Lead User Experience Designer</h3>
+                <div class="date">Sep 2012 – Nov 2016</div>
+                <p class="company"><strong>EPAM</strong> • Full-time</p>
+                <p>Managed a design studio and provided design strategy consulting to cross-functional teams.</p>
+              </article>
+              <article class="role">
+                <h3>User Experience Designer</h3>
+                <div class="date">Aug 2010 – Apr 2012</div>
+                <p class="company"><strong>Adility</strong> • Full-time</p>
+                <p>Designed end-to-end user experience for the platform.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" aria-labelledby="projects-title">
+          <div class="card-inner">
+            <div class="section-title">
+              <h2 id="projects-title">Projects</h2>
+              <span class="section-kicker">XR / 3D / AI</span>
+            </div>
+            <div class="projects">
+              <article class="project">
+                <span class="project-tag">Sports XR</span>
+                <h3>Training for Golf Athletes</h3>
+                <p>Developed a high-performance XR training application featuring decoupled architecture for real-time biometric sensor data integration and seamless communication with a companion mobile app. Implemented asynchronous video streaming and spatial UI for high-frequency data visualization.</p>
+              </article>
+              <article class="project">
+                <span class="project-tag">Medical Simulation</span>
+                <h3>Training for Surgical Practitioners</h3>
+                <p>Engineered a high-fidelity surgical simulation focused on sub-millimeter interaction precision and procedural animation. Optimized rendering for Magic Leap hardware with custom HLSL shaders while maintaining stable performance.</p>
+              </article>
+              <article class="project">
+                <span class="project-tag">Industrial Digital Twin</span>
+                <h3>Digital Twin for Mining Industry</h3>
+                <p>Developed a real-time 3D visualization platform for large-scale terrain data, integrating live production telemetry for operational monitoring. Optimized asynchronous data streaming for responsive navigation across complex industrial environments.</p>
+              </article>
+              <article class="project">
+                <span class="project-tag">Automotive XR</span>
+                <h3>Interactive Car Configuration</h3>
+                <p>Developed an enterprise XR application featuring runtime avatar integration, procedural animation, and a spatial interface for car customization. Used device-specific profiling to maximize Magic Leap performance.</p>
+              </article>
+              <article class="project">
+                <span class="project-tag">HMI</span>
+                <h3>In-Vehicle Interface</h3>
+                <p>Built a low-latency in-car infotainment system with graphics optimization and responsive interaction logic. Authored custom HLSL shaders and animation-driven UI transitions for high-fidelity environments.</p>
+              </article>
+              <article class="project">
+                <span class="project-tag">AI Avatar</span>
+                <h3>Virtual Assistant</h3>
+                <p>Developed an AI-driven virtual assistant with real-time facial animation and photogrammetry-based 3D avatar reconstruction. Integrated OpenAI through an asynchronous architecture for fluid real-time interactions.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" aria-labelledby="certificates-title">
+          <div class="card-inner">
+            <div class="section-title">
+              <h2 id="certificates-title">Certificates</h2>
+              <span class="section-kicker">2022—2026</span>
+            </div>
+            <ul class="cert-list">
+              <li><span class="cert-date">2026</span><span class="cert-title">C# and .NET Design Patterns</span><span class="cert-source">Udemy</span></li>
+              <li><span class="cert-date">2025</span><span class="cert-title">Full-Stack Unity Developer</span><span class="cert-source">Code Craft</span></li>
+              <li><span class="cert-date">2025</span><span class="cert-title">XR Foundations Bootcamp</span><span class="cert-source">XR Bootcamp</span></li>
+              <li><span class="cert-date">2025</span><span class="cert-title">FMOD for Game Audio</span><span class="cert-source">Udemy</span></li>
+              <li><span class="cert-date">2025</span><span class="cert-title">Build Your MR Game &amp; Publish it on Meta’s Horizon Store</span><span class="cert-source">Udemy</span></li>
+              <li><span class="cert-date">2024</span><span class="cert-title">MVC Architecture For Unity 6 &amp; C#</span><span class="cert-source">Udemy</span></li>
+              <li><span class="cert-date">2024</span><span class="cert-title">Unit Testing For Unity 6 &amp; C#</span><span class="cert-source">Udemy</span></li>
+              <li><span class="cert-date">2023</span><span class="cert-title">Physics For Unity</span><span class="cert-source">Udemy</span></li>
+              <li><span class="cert-date">2023</span><span class="cert-title">Complete C# Unity Game Developer</span><span class="cert-source">Udemy</span></li>
+              <li><span class="cert-date">2022</span><span class="cert-title">Programming for Unity Game Development Specialization</span><span class="cert-source">Coursera</span></li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <aside class="side-column" aria-label="CV details">
+        <section class="card side-card" aria-labelledby="skills-title">
+          <div class="card-inner">
+            <div class="section-title">
+              <h2 id="skills-title">Skills</h2>
+              <span class="section-kicker">Toolkit</span>
+            </div>
+            <div class="skill-groups">
+              <div class="skill-group">
+                <h3>Engineering</h3>
+                <div class="chips">
+                  <span class="chip">C#</span><span class="chip">OOP</span><span class="chip">SOLID</span><span class="chip">Design Patterns</span><span class="chip">MVx / MVC / MVP</span><span class="chip">Git</span><span class="chip">Data Structures</span><span class="chip">REST API</span><span class="chip">LINQ</span><span class="chip">Dependency Injection</span><span class="chip">Async</span><span class="chip">Unit Testing</span><span class="chip">AR / VR</span><span class="chip">Mobile</span><span class="chip">Android</span><span class="chip">iOS</span><span class="chip">Agile / Scrum</span>
+                </div>
+              </div>
+              <div class="skill-group">
+                <h3>Unity</h3>
+                <div class="chips">
+                  <span class="chip">Unity Engine</span><span class="chip">Profiler</span><span class="chip">Animator</span><span class="chip">Timeline</span><span class="chip">Physics</span><span class="chip">Addressables</span><span class="chip">UI Toolkit</span><span class="chip">USS</span><span class="chip">UXML</span><span class="chip">Tween</span><span class="chip">FMOD</span><span class="chip">UniTask</span><span class="chip">ShaderLab / HLSL</span><span class="chip">XR Interaction</span><span class="chip">Meta SDK</span><span class="chip">Editor Tools</span><span class="chip">Odin</span>
+                </div>
+              </div>
+              <div class="skill-group">
+                <h3>Design</h3>
+                <div class="chips">
+                  <span class="chip">Problem Framing</span><span class="chip">Design Thinking</span><span class="chip">User-Centered Design</span><span class="chip">UX Design</span><span class="chip">UI Design</span><span class="chip">Spatial Design</span><span class="chip">Interaction Design</span><span class="chip">Design Systems</span><span class="chip">Micro-Interactions</span><span class="chip">Prototyping</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card side-card" aria-labelledby="contact-title">
+          <div class="card-inner">
+            <div class="section-title">
+              <h2 id="contact-title">Contact</h2>
+              <span class="section-kicker">Links</span>
+            </div>
+            <ul class="contact-list">
+              <li><span class="contact-label">Location</span><span class="contact-value">Gdańsk, Poland</span></li>
+              <li><span class="contact-label">Email</span><a class="contact-value" href="mailto:timur.proko@gmail.com">timur.proko@gmail.com</a></li>
+              <li><span class="contact-label">LinkedIn</span><a class="contact-value" href="https://www.linkedin.com/in/timurproko/" target="_blank" rel="noopener noreferrer">linkedin.com/in/timurproko</a></li>
+              <li><span class="contact-label">GitHub</span><a class="contact-value" href="https://github.com/timurproko" target="_blank" rel="noopener noreferrer">github.com/timurproko</a></li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="card side-card" aria-labelledby="education-title">
+          <div class="card-inner">
+            <div class="section-title">
+              <h2 id="education-title">Education</h2>
+              <span class="section-kicker">2000—2004</span>
+            </div>
+            <ul class="compact-list">
+              <li><strong>Vernadsky Taurida National University</strong><br>Computer Science • Bachelor’s degree</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="card side-card" aria-labelledby="languages-title">
+          <div class="card-inner">
+            <div class="section-title">
+              <h2 id="languages-title">Languages</h2>
+              <span class="section-kicker">4</span>
+            </div>
+            <ul class="compact-list">
+              <li>Ukrainian — Native</li>
+              <li>Russian — Native</li>
+              <li>English — Advanced (C1)</li>
+              <li>Polish — Basic (A2)</li>
+            </ul>
+          </div>
+        </section>
+
+      </aside>
+    </div>
+
+    <footer>2026</footer>
+  </main>
+</body>
+</html>
