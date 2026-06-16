@@ -616,6 +616,26 @@
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
       }
+      body.mobile-search-active {
+        padding-top: 56px;
+      }
+      body.mobile-search-active nav {
+        position: fixed;
+        top: var(--visual-viewport-top, 0px);
+        left: 0;
+        right: 0;
+      }
+      body.mobile-search-active .toolbar.is-search-active {
+        position: fixed;
+        top: calc(var(--visual-viewport-top, 0px) + 56px);
+        left: 0;
+        right: 0;
+        margin-left: 0;
+        margin-right: 0;
+      }
+      body.mobile-search-active .grid {
+        padding-top: 43px;
+      }
       .toolbar.is-search-active.is-search-pinned {
         border-bottom-color: var(--border);
       }
@@ -867,7 +887,19 @@
         clearPendingMobileSearchBlur();
         updateSearchPinnedState();
       }, { passive: true });
-      window.addEventListener("resize", updateSearchPinnedState);
+      window.addEventListener("resize", () => {
+        updateVisualViewportTop();
+        updateSearchPinnedState();
+      });
+      window.visualViewport?.addEventListener("resize", () => {
+        updateVisualViewportTop();
+        updateSearchPinnedState();
+      });
+      window.visualViewport?.addEventListener("scroll", () => {
+        updateVisualViewportTop();
+        updateSearchPinnedState();
+      });
+      updateVisualViewportTop();
 
       document.addEventListener("pointerdown", event => {
         if (!isMobileSearchFocused()) return;
@@ -937,14 +969,23 @@
     function updateSearchState() {
       const hasSearchText = search.value.trim().length > 0;
       const isFocused = document.activeElement === search;
+      const isActiveMobileSearch = (hasSearchText || isFocused) && window.matchMedia("(max-width: 760px)").matches;
       toolbar?.classList.toggle("is-search-active", hasSearchText || isFocused);
+      document.body.classList.toggle("mobile-search-active", isActiveMobileSearch);
+      updateVisualViewportTop();
       updateSearchPinnedState();
+    }
+
+    function updateVisualViewportTop() {
+      const viewportTop = window.visualViewport?.offsetTop || 0;
+      document.documentElement.style.setProperty("--visual-viewport-top", `${viewportTop}px`);
     }
 
     function updateSearchPinnedState() {
       if (!toolbar) return;
       const isActiveMobileSearch = toolbar.classList.contains("is-search-active") && window.matchMedia("(max-width: 760px)").matches;
-      const isPinned = isActiveMobileSearch && toolbar.getBoundingClientRect().top <= 56.5;
+      const isFixedForKeyboard = document.body.classList.contains("mobile-search-active");
+      const isPinned = isActiveMobileSearch && (isFixedForKeyboard || toolbar.getBoundingClientRect().top <= 56.5);
       toolbar.classList.toggle("is-search-pinned", isPinned);
     }
 
