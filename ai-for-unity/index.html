@@ -223,8 +223,8 @@
   .slide.center .slide-tag { left: 50%; transform: translateX(-50%); }
   .slide.hero.center .slide-tag.inline { position: static; left: auto; transform: none; display: block; margin: 48px auto 0; text-align: center; width: max-content; }
   .slide.hero.center .slide-tag.inline::before { content: none; }
-  .slide.hero.center .slide-tag.inline::after { content: ''; display: block; width: 100%; height: 2px; margin-top: 10px; background: var(--accent); border-radius: 999px; transform: scaleX(0); transform-origin: left center; }
-  .slide.hero.center .slide-tag.inline.year-line-visible::after { animation: expandWidth 520ms var(--ease-spring) both; }
+  .slide.hero.center .slide-tag.inline::after { content: ''; display: block; width: 100%; height: 2px; margin-top: 10px; background: var(--accent); border-radius: 999px; opacity: 0; transition: opacity 360ms var(--ease-standard); }
+  .slide.hero.center .slide-tag.inline.year-line-visible::after { opacity: 1; }
   .cover-year { display: inline-block; min-width: 4ch; opacity: 0; clip-path: inset(0 0 100% 0); transform: translateY(10px); transition: opacity 560ms var(--ease-spring), clip-path 720ms var(--ease-spring), transform 720ms var(--ease-spring); will-change: opacity, clip-path, transform; }
   .cover-year.is-visible { opacity: 1; clip-path: inset(0 0 0 0); transform: translateY(0); }
   /* hide in-slide tags on non-hero content slides — chrome shows them dynamically */
@@ -1590,20 +1590,21 @@
     coverYear.textContent = '0'.repeat(targetText.length);
     coverYear.setAttribute('aria-label', targetText);
 
+    function showYearLine() {
+      if (coverYear.parentElement) coverYear.parentElement.classList.add('year-line-visible');
+    }
+
     function finish() {
       coverYear.classList.add('is-visible');
       coverYear.textContent = targetText;
-      if (coverYear.parentElement) {
-        window.setTimeout(function () {
-          coverYear.parentElement.classList.add('year-line-visible');
-        }, 120);
-      }
+      showYearLine();
     }
 
     return function revealCoverYear() {
       if (hasAnimated) return;
       hasAnimated = true;
       coverYear.classList.add('is-visible');
+      showYearLine();
 
       if (reducedMotion) {
         finish();
