@@ -451,8 +451,8 @@
   .progression .step.here .idx { color: #15803d; }
   .progression .step.here::after { content: "WE ARE HERE"; position: absolute; right: 24px; top: 50%; transform: translateY(-50%); font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.22em; color: #15803d; background: color-mix(in oklab, #15803d, transparent 83%); padding: 4px 12px; border-radius: 999px; }
   .slide-evolution .progression { margin-top: 36px; }
-  .pillars-venn { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; width: 100%; }
-  .pillars-venn svg { width: auto; height: 100%; max-height: min(940px, 88vh); max-width: 96vw; display: block; overflow: visible; }
+  .pillars-venn { flex: 1; min-height: 0; display: flex; align-items: flex-start; justify-content: center; width: 100%; padding-top: clamp(12px, 1.5vh, 24px); }
+  .pillars-venn svg { width: auto; height: min(100%, 59vh); max-height: min(660px, 59vh); max-width: min(1040px, 88vw); display: block; overflow: visible; }
   .pillars-venn .venn-rings circle { mix-blend-mode: multiply; transition: opacity var(--motion-base) var(--ease-standard); }
   .pillars-venn .venn-label text { font-family: var(--font-display); font-weight: 600; font-size: 44px; letter-spacing: -0.01em; }
   .pillars-venn .venn-core { font-family: var(--font-display); font-weight: 800; font-size: 52px; letter-spacing: -0.02em; fill: #ffffff; }
@@ -595,6 +595,51 @@
       scrollbar-width: none;
     }
     .slide::-webkit-scrollbar { display: none; }
+    .has-scroll-content {
+      padding-bottom: 0;
+      overflow-y: hidden;
+    }
+    .scroll-split-owner > .deck-headline,
+    .scroll-split-owner > .trend-intro {
+      flex: 0 0 auto;
+    }
+    .scroll-split-owner > .slide-scroll-content {
+      display: block;
+      position: relative;
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+      max-width: 100%;
+      padding-bottom: clamp(120px, 10vh, 180px);
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .scroll-split-owner > .slide-scroll-content::-webkit-scrollbar { display: none; }
+    .scroll-split-owner > .slide-scroll-content::before {
+      content: '';
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 5;
+      display: block;
+      height: 72px;
+      margin-bottom: -72px;
+      pointer-events: none;
+      opacity: 1;
+      background: linear-gradient(to bottom, var(--bg) 0%, color-mix(in oklab, var(--bg), transparent 16%) 42%, transparent 100%);
+      transition: opacity 160ms var(--ease-standard);
+    }
+    .scroll-split-owner > .slide-scroll-content.is-at-top::before { opacity: 0; }
+    .slide.dark .scroll-split-owner > .slide-scroll-content::before {
+      background: linear-gradient(to bottom, var(--fg) 0%, color-mix(in oklab, var(--fg), transparent 16%) 42%, transparent 100%);
+    }
+    .slide-zx-end .scroll-split-owner > .slide-scroll-content::before {
+      background: linear-gradient(to bottom, #050505 0%, rgba(5,5,5,0.84) 42%, transparent 100%);
+    }
 
     body::before,
     body::after {
@@ -608,19 +653,19 @@
     }
     body::before {
       top: 0;
-      height: 140px;
+      height: 104px;
       background: linear-gradient(to bottom, var(--bg) 0%, color-mix(in oklab, var(--bg), transparent 8%) 42%, transparent 100%);
     }
     body::after {
       bottom: 0;
-      height: 150px;
-      background: linear-gradient(to top, var(--bg) 0%, color-mix(in oklab, var(--bg), transparent 5%) 36%, transparent 100%);
+      height: 104px;
+      background: linear-gradient(to top, var(--bg) 0%, color-mix(in oklab, var(--bg), transparent 8%) 42%, transparent 100%);
     }
     body.chrome-on-dark::before {
       background: linear-gradient(to bottom, var(--fg) 0%, color-mix(in oklab, var(--fg), transparent 8%) 42%, transparent 100%);
     }
     body.chrome-on-dark::after {
-      background: linear-gradient(to top, var(--fg) 0%, color-mix(in oklab, var(--fg), transparent 5%) 36%, transparent 100%);
+      background: linear-gradient(to top, var(--fg) 0%, color-mix(in oklab, var(--fg), transparent 8%) 42%, transparent 100%);
     }
     body.deck-is-sliding::before,
     body.deck-is-sliding::after {
@@ -871,6 +916,7 @@
     .slide-zx-end::after { opacity: 0.26 !important; }
   }
 
+  .slide-scroll-content { display: contents; }
   .mobile-swipe-hint { display: none; }
 
   @media (max-width: 760px) {
@@ -911,6 +957,56 @@
     .slide.hero .h-hero { font-size: clamp(48px, 15vw, 72px); line-height: 0.98; letter-spacing: -0.035em; }
     .deck-headline { font-size: clamp(34px, 10vw, 48px); line-height: 1.03; margin-bottom: 24px; max-width: 100%; }
     .deck-subhead { font-size: clamp(15px, 4.2vw, 20px); line-height: 1.55; margin-top: 4px; margin-bottom: 24px; max-width: 100%; }
+    .has-scroll-content {
+      padding-bottom: 0;
+      overflow-y: hidden;
+    }
+    .scroll-split-owner > .deck-headline,
+    .scroll-split-owner > .deck-subhead,
+    .scroll-split-owner > .trend-intro {
+      flex: 0 0 auto;
+    }
+    .scroll-split-owner > .slide-scroll-content {
+      display: block;
+      position: relative;
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+      max-width: 100%;
+      padding-bottom: 96px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .scroll-split-owner > .slide-scroll-content::-webkit-scrollbar { display: none; }
+    .scroll-split-owner > .slide-scroll-content::before {
+      content: '';
+      position: sticky;
+      left: 0;
+      right: 0;
+      z-index: 5;
+      display: block;
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 160ms var(--ease-standard);
+    }
+    .scroll-split-owner > .slide-scroll-content.is-at-top::before {
+      opacity: 0;
+    }
+    .scroll-split-owner > .slide-scroll-content::before {
+      top: 0;
+      height: 34px;
+      margin-bottom: -34px;
+      background: linear-gradient(to bottom, var(--bg) 0%, color-mix(in oklab, var(--bg), transparent 58%) 38%, transparent 100%);
+    }
+    .slide.dark .scroll-split-owner > .slide-scroll-content::before {
+      background: linear-gradient(to bottom, var(--fg) 0%, color-mix(in oklab, var(--fg), transparent 58%) 38%, transparent 100%);
+    }
+    .slide-zx-end .scroll-split-owner > .slide-scroll-content::before {
+      background: linear-gradient(to bottom, #050505 0%, rgba(5,5,5,0.42) 38%, transparent 100%);
+    }
     .deck-section-label { font-size: 11px; margin-bottom: 8px; }
     .lead { font-size: clamp(22px, 6vw, 32px); margin-top: 24px; max-width: 100%; }
     .arrow-list { gap: 16px; margin-top: 24px; max-width: 100%; }
@@ -1020,7 +1116,7 @@
     .slide-mcp .mcp-tags,
     .slide-mcp .arrow-list,
     .slide-mcp .mcp-prosconlabel { max-width: 100%; }
-    .mcp-logo { position: static; transform: none; width: min(180px, 48vw); align-items: flex-start; gap: 14px; margin: 0 0 24px; }
+    .mcp-logo { display: none; }
     .mcp-logo .mcp-mark { width: min(96px, 28vw); }
     .mcp-tags { gap: 8px; }
     .mcp-tags .tag { white-space: normal; font-size: 12px; padding: 7px 12px; }
@@ -2067,7 +2163,55 @@
     return { onVisible: onVisible, onHidden: onHidden };
   }
 
+  function setupMobileScrollRegions() {
+    document.querySelectorAll('.slide:not(.hero)').forEach(function(slide) {
+      if (slide.querySelector('.slide-scroll-content')) return;
+
+      var title = slide.querySelector('.deck-headline, .h-hero');
+      if (!title) return;
+
+      var headerEnd = title;
+      var owner = title.parentElement;
+
+      // Some slides keep the title in a tiny intro wrapper while the real
+      // content is a sibling of that wrapper. Treat that intro wrapper as the
+      // pinned header so the behavior stays universal across slide layouts.
+      if (owner !== slide && !title.nextElementSibling && owner.parentElement && slide.contains(owner.parentElement)) {
+        headerEnd = owner;
+        owner = owner.parentElement;
+      }
+
+      if (!owner || !owner.contains(headerEnd)) return;
+
+      var nodesToMove = [];
+      var node = headerEnd.nextSibling;
+      while (node) {
+        var nextNode = node.nextSibling;
+        nodesToMove.push(node);
+        node = nextNode;
+      }
+
+      var hasElementContent = nodesToMove.some(function(child) { return child.nodeType === 1; });
+      if (!hasElementContent) return;
+
+      var scroller = document.createElement('div');
+      scroller.className = 'slide-scroll-content is-at-top';
+      nodesToMove.forEach(function(child) { scroller.appendChild(child); });
+      owner.appendChild(scroller);
+      owner.classList.add('scroll-split-owner');
+      slide.classList.add('has-scroll-content');
+
+      function updateTopFade() {
+        scroller.classList.toggle('is-at-top', scroller.scrollTop <= 1);
+      }
+      scroller.addEventListener('scroll', updateTopFade, { passive: true });
+      updateTopFade();
+    });
+  }
+
   function setupAll() {
+    setupMobileScrollRegions();
+
     function currentDeckScrollLeft() {
       return Math.max(
         Math.abs(document.documentElement.scrollLeft || 0),
