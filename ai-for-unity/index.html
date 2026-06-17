@@ -937,9 +937,15 @@
     cursor: pointer;
     transform: scale(1);
     transform-origin: center;
+  }
+  .zx-cube-frame {
+    width: 100%;
+    height: 100%;
+    transform: scale(1);
+    transform-origin: center;
     transition: transform var(--motion-hover) var(--ease-spring), filter var(--motion-hover) var(--ease-standard);
   }
-  .zx-demo:hover { transform: scale(1.055); }
+  .zx-demo:hover .zx-cube-frame { transform: scale(1.038); }
   .zx-cube-canvas {
     display: block;
     width: 100%;
@@ -969,6 +975,33 @@
     color: #f8f8f9;
     text-shadow: 2px 0 #ff004d, -2px 0 #00e5ff, 0 0 18px rgba(255,255,255,0.35);
   }
+  .zx-tap-compute {
+    --tap-x: 50%;
+    --tap-y: 50%;
+    position: absolute;
+    left: var(--tap-x);
+    top: var(--tap-y);
+    z-index: 2;
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-mono);
+    font-size: clamp(11px, 0.9vw, 15px);
+    line-height: 1;
+    letter-spacing: 0.22em;
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: #f8f8f9;
+    mix-blend-mode: screen;
+    filter: drop-shadow(0 0 2px rgba(255,255,255,0.18));
+    will-change: opacity, transform, color, text-shadow;
+  }
+  .zx-tap-compute .mobile-label { display: none; }
+  .animations-ready .slide-zx-end.is-visible .zx-tap-compute.is-active {
+    animation: zxTapComputeBurst 1120ms steps(7, end) both;
+  }
   .slide-zx-end .deck-headline { color: #f8f8f9; }
   .slide-zx-end .deck-subhead { color: color-mix(in oklab, #f8f8f9, transparent 30%); }
   .zx-end-subhead { color: color-mix(in oklab, #f8f8f9, transparent 30%); }
@@ -981,6 +1014,15 @@
     25% { filter: drop-shadow(2px 0 #ffdd00) drop-shadow(-2px 0 #00ff66) drop-shadow(0 0 12px rgba(255,255,255,0.30)); }
     50% { filter: drop-shadow(2px 0 #00e5ff) drop-shadow(-2px 0 #7a5cff) drop-shadow(0 0 12px rgba(255,255,255,0.30)); }
     75% { filter: drop-shadow(2px 0 #ff00ff) drop-shadow(-2px 0 #ff7a00) drop-shadow(0 0 12px rgba(255,255,255,0.30)); }
+  }
+  @keyframes zxTapComputeBurst {
+    0% { opacity: 0; transform: translate(-50%, -50%) translateY(8px) scale(0.92); color: #00e5ff; text-shadow: 0.45px 0 #ff004d, -0.45px 0 #00e5ff, 0 0 5px rgba(255,255,255,0.12); }
+    12% { opacity: 1; transform: translate(-50%, -50%) translateY(0) scale(1); color: #f8f8f9; text-shadow: 0.45px 0 #ff004d, -0.45px 0 #00e5ff, 0 0 7px rgba(255,255,255,0.26); }
+    28% { opacity: 0.94; color: #ffdd00; text-shadow: 0.45px 0 #00ff66, -0.45px 0 #ff004d, 0 0 6px rgba(255,221,0,0.2); }
+    44% { opacity: 1; color: #00ff66; text-shadow: 0.45px 0 #00e5ff, -0.45px 0 #ff00ff, 0 0 6px rgba(0,255,102,0.22); }
+    62% { opacity: 0.95; color: #ff00ff; text-shadow: 0.45px 0 #ffdd00, -0.45px 0 #00e5ff, 0 0 7px rgba(255,0,255,0.2); }
+    78% { opacity: 1; color: #f8f8f9; text-shadow: 0.45px 0 #ff004d, -0.45px 0 #00e5ff, 0 0 7px rgba(255,255,255,0.24); }
+    100% { opacity: 0; transform: translate(-50%, -50%) translateY(-10px) scale(1.04); color: #ff7a00; text-shadow: 0.45px 0 #00e5ff, -0.45px 0 #ff004d, 0 0 1px rgba(255,255,255,0); }
   }
   @keyframes crtFlicker {
     0%, 100% { opacity: 0.22; transform: translateY(0); }
@@ -996,6 +1038,7 @@
     .animations-ready .zx-cube-canvas,
     .animations-ready .zx-word { opacity: 1 !important; animation: none !important; transform: none !important; }
     .slide-zx-end::after { opacity: 0.26 !important; }
+    .zx-tap-compute { animation: none !important; }
   }
 
   .slide-scroll-content { display: contents; }
@@ -1262,6 +1305,12 @@
       width: min(78vw, 44vh, 450px);
       margin: 0;
     }
+    .slide-zx-end .zx-tap-compute {
+      font-size: clamp(10px, 2.9vw, 13px);
+      letter-spacing: 0.2em;
+    }
+    .zx-tap-compute .desktop-label { display: none; }
+    .zx-tap-compute .mobile-label { display: inline; }
 
     .ui-lane { padding: 18px; border-radius: 14px; }
     .ui-item { padding: 10px 12px 10px 36px; font-size: 16px; }
@@ -1904,7 +1953,10 @@
   <h2 class="deck-headline">Thank You</h2>
   <p class="deck-subhead zx-end-subhead">Questions?</p>
   <div class="zx-demo" aria-hidden="true">
-    <canvas class="zx-cube-canvas" id="zxCanvasCube" width="600" height="600"></canvas>
+    <div class="zx-cube-frame">
+      <canvas class="zx-cube-canvas" id="zxCanvasCube" width="600" height="600"></canvas>
+    </div>
+    <div class="zx-tap-compute"><span class="desktop-label">CLICK TO COMPUTE</span><span class="mobile-label">TAP TO COMPUTE</span></div>
   </div>
 </section>
 
@@ -1914,6 +1966,8 @@
 
   var canvas = document.getElementById('zxCanvasCube');
   if (!canvas || !canvas.getContext) return;
+  var tapCompute = document.querySelector('.zx-tap-compute');
+  var endSlide = canvas.closest('.slide-zx-end');
 
   // Adapted from anirudhkhanna/juspay-hackathon-canvas-cube: real 3D points
   // projected and redrawn on HTML5 Canvas instead of the previous static SVG cube.
@@ -1963,6 +2017,12 @@
   var theta = -0.55;
   var phi = 0.35;
   var spinAmortization = 0.982;
+  var tapComputePaused = false;
+  var tapComputeActive = false;
+  var tapComputeHideTimer = 0;
+  var tapComputeMinResumeAt = 0;
+  var tapComputeSettleBurstQueued = false;
+  var tapComputeSettleThreshold = 0.010;
 
   function randomSigned(min, max) {
     var value = min + Math.random() * (max - min);
@@ -2036,6 +2096,7 @@
     baseY += (targetY - baseY) * 0.018;
     spinX *= spinAmortization;
     spinY *= spinAmortization;
+    updateTapComputePause(now);
     theta += baseX + spinX;
     phi += baseY + spinY;
 
@@ -2075,12 +2136,76 @@
   }
   function kickCube() {
     if (reduceMotion) return;
+    var now = performance.now();
     targetX = randomSigned(0.010, 0.024);
     targetY = randomSigned(0.006, 0.018);
     spinX += randomSigned(0.055, 0.115);
     spinY += randomSigned(0.035, 0.085);
-    nextSpeedShuffle = performance.now() + 900 + Math.random() * 900;
+    nextSpeedShuffle = now + 900 + Math.random() * 900;
+    hideTapComputeUntilSettled(now);
   }
+
+  function hideTapComputeUntilSettled(now) {
+    tapComputePaused = true;
+    tapComputeSettleBurstQueued = false;
+    tapComputeMinResumeAt = now + 1400;
+    hideTapComputeText();
+  }
+
+  function updateTapComputePause(now) {
+    if (!tapComputePaused) return;
+    if (now < tapComputeMinResumeAt) return;
+    if ((Math.abs(spinX) + Math.abs(spinY)) > tapComputeSettleThreshold) return;
+    tapComputePaused = false;
+    if (tapComputeSettleBurstQueued) return;
+    tapComputeSettleBurstQueued = true;
+    window.setTimeout(function () {
+      tapComputeSettleBurstQueued = false;
+      burstTapCompute();
+    }, 900);
+  }
+
+  function isEndSlideVisible() {
+    return !!tapCompute && !!endSlide && endSlide.classList.contains('is-visible');
+  }
+
+  function hideTapComputeText() {
+    if (!tapCompute) return;
+    tapComputeActive = false;
+    if (tapComputeHideTimer) {
+      window.clearTimeout(tapComputeHideTimer);
+      tapComputeHideTimer = 0;
+    }
+    tapCompute.classList.remove('is-active');
+    tapCompute.style.opacity = '0';
+  }
+
+  function burstTapCompute() {
+    if (reduceMotion || tapComputePaused || tapComputeActive || !isEndSlideVisible()) return;
+    tapComputeActive = true;
+    tapCompute.style.opacity = '';
+    tapCompute.style.setProperty('--tap-x', '50%');
+    tapCompute.style.setProperty('--tap-y', '106%');
+    tapCompute.classList.remove('is-active');
+    void tapCompute.offsetWidth;
+    tapCompute.classList.add('is-active');
+    tapComputeHideTimer = window.setTimeout(hideTapComputeText, 1180);
+  }
+
+  if (tapCompute) {
+    tapCompute.addEventListener('animationend', function (e) {
+      if (e.animationName === 'zxTapComputeBurst') hideTapComputeText();
+    });
+  }
+
+  function scheduleTapCompute() {
+    if (!tapCompute) return;
+    window.setTimeout(function () {
+      if (!tapComputeActive) burstTapCompute();
+      scheduleTapCompute();
+    }, 1600 + Math.random() * 2400);
+  }
+  scheduleTapCompute();
 
   canvas.addEventListener('pointerdown', function (e) {
     var p = pointerPoint(e);
