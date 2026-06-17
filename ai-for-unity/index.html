@@ -590,14 +590,9 @@
     box-shadow: 0 8px 24px rgba(0,0,0,0.18);
   }
   body.chrome-on-dark .mobile-swipe-hint .swipe-label { color: color-mix(in oklab, #f8f8f9, transparent 48%); }
+  body.chrome-on-dark .mobile-swipe-hint .swipe-arrow { color: #f8f8f9; }
   body.chrome-on-dark .mobile-swipe-hint .swipe-counter { color: #f8f8f9; }
   body.chrome-on-dark .mobile-swipe-hint .swipe-counter .total { color: color-mix(in oklab, #f8f8f9, transparent 48%); }
-  body.chrome-on-dark .mobile-swipe-hint .swipe-arrow {
-    color: #f8f8f9;
-    background: color-mix(in oklab, #f8f8f9, transparent 90%);
-    border-color: color-mix(in oklab, #f8f8f9, transparent 86%);
-    box-shadow: 0 1px 0 rgba(255,255,255,0.08);
-  }
   body.chrome-on-dark .deck-counter,
   body.chrome-on-dark .deck-credit,
   body.chrome-on-dark .deck-tag {
@@ -1227,24 +1222,16 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 2px 6px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      background: color-mix(in oklab, var(--surface), var(--fg) 4%);
       color: var(--fg);
       font: inherit;
-      font-size: 1em;
+      font-size: 1.25em;
       font-weight: inherit;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      letter-spacing: 0;
       line-height: 1;
-      box-shadow: 0 1px 0 var(--border);
-      transition:
-        background-color 720ms var(--ease-standard),
-        border-color 720ms var(--ease-standard),
-        color 720ms var(--ease-standard),
-        box-shadow 720ms var(--ease-standard);
+      transform: translateY(1px);
+      transition: color 720ms var(--ease-standard);
     }
+    .mobile-swipe-hint .swipe-next .swipe-arrow { transform: translateY(0); }
     .mobile-swipe-hint .swipe-label,
     .mobile-swipe-hint .swipe-counter {
       display: inline-block;
@@ -1402,7 +1389,7 @@
   <span class="nav-action-label">Next</span>
 </div>
 <section class="slide hero center dark" data-screen-label="01 Cover" data-notes="Welcome. This talk is about how AI is reshaping Unity development — from autocomplete to agentic engineering. We'll cover what changed, what tools matter, and what skills you need now.">
-  <div class="kicker">A Knowledge-Sharing Session</div>
+  <div class="kicker">From hype to production</div>
   <h1 class="h-hero">AI for Unity<br/>Development</h1>
   <span class="slide-tag inline"><span class="cover-year" data-cover-year aria-label="2026">0000</span></span>
   <div class="cover-meta"><span class="speaker">Timur Prokopiev</span><span class="cover-desc">Engineering · Tooling · Workflows</span></div>
