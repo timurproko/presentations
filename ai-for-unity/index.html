@@ -821,6 +821,8 @@
 
   /* ── ZX Spectrum-style end slide ── */
   .slide-zx-end {
+    --zx-cube-x: 50%;
+    --zx-cube-y: 52%;
     justify-content: flex-start;
     align-items: stretch;
     text-align: left;
@@ -834,7 +836,7 @@
     inset: 0;
     z-index: -2;
     background:
-      radial-gradient(circle at 50% 45%, rgba(77, 220, 255, 0.18), transparent 36%),
+      radial-gradient(circle at var(--zx-cube-x) var(--zx-cube-y), rgba(77, 220, 255, 0.18), transparent 36%),
       linear-gradient(180deg, #050505 0%, #101010 48%, #050505 100%);
   }
   .slide-zx-end::after {
@@ -850,19 +852,25 @@
     opacity: 0.26;
     animation: crtFlicker 1250ms steps(7, end) infinite;
   }
+  .slide-zx-end.scroll-split-owner > .slide-scroll-content { position: static; }
   .zx-demo {
     position: absolute;
-    left: 50%;
-    top: 56%;
+    left: var(--zx-cube-x);
+    top: var(--zx-cube-y);
     translate: -50% -50%;
     width: min(620px, 48vw, 58vh);
     aspect-ratio: 1;
+    cursor: pointer;
+    transform: scale(1);
+    transform-origin: center;
+    transition: transform var(--motion-hover) var(--ease-spring), filter var(--motion-hover) var(--ease-standard);
   }
+  .zx-demo:hover { transform: scale(1.055); }
   .zx-cube-canvas {
     display: block;
     width: 100%;
     height: 100%;
-    touch-action: none;
+    touch-action: manipulation;
     filter: drop-shadow(2px 0 #ff004d) drop-shadow(-2px 0 #00e5ff) drop-shadow(0 0 14px rgba(255,255,255,0.28));
   }
   .animations-ready .zx-cube-canvas,
@@ -1135,6 +1143,7 @@
     .slide > svg { max-width: 100%; height: auto; }
     .flow-graph { position: static !important; display: flex !important; width: 100%; justify-content: center; align-items: center; margin-top: 28px; }
     .flow-graph svg { width: min(100%, 340px); height: auto; }
+    .slide-zx-end.scroll-split-owner > .slide-scroll-content { position: static; overflow: visible; }
     .zx-demo { position: relative; left: auto; top: auto; translate: none; width: min(100%, 560px); margin: 32px auto 0; }
 
     .ui-lane { padding: 18px; border-radius: 14px; }
@@ -1823,14 +1832,32 @@
   var diagonals = [[0,6], [1,7], [2,4], [3,5]];
   var ctx = canvas.getContext('2d');
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var drag = false;
+  var pointerDown = false;
+  var pointerMoved = false;
   var oldX = 0;
   var oldY = 0;
-  var dX = reduceMotion ? 0 : 0.006;
-  var dY = reduceMotion ? 0 : 0.003;
+  var baseX = reduceMotion ? 0 : 0.006;
+  var baseY = reduceMotion ? 0 : 0.003;
+  var targetX = baseX;
+  var targetY = baseY;
+  var spinX = 0;
+  var spinY = 0;
+  var nextSpeedShuffle = 0;
   var theta = -0.55;
   var phi = 0.35;
-  var amortization = 0.95;
+  var spinAmortization = 0.982;
+
+  function randomSigned(min, max) {
+    var value = min + Math.random() * (max - min);
+    return (Math.random() < 0.5 ? -1 : 1) * value;
+  }
+
+  function shuffleBaseSpeed(now) {
+    if (reduceMotion || now < nextSpeedShuffle) return;
+    targetX = randomSigned(0.0045, 0.015);
+    targetY = randomSigned(0.0025, 0.010);
+    nextSpeedShuffle = now + 650 + Math.random() * 1350;
+  }
 
   function resizeCanvas() {
     var rect = canvas.getBoundingClientRect();
@@ -1847,11 +1874,29 @@
 
   function projectedPoints(size) {
     var points = [];
+    var minX = Infinity;
+    var maxX = -Infinity;
+    var minY = Infinity;
+    var maxY = -Infinity;
     for (var i = 0; i < vertices.length; i++) {
-      points.push(vertices[i]
+      var point = vertices[i]
         .rotateX(phi * 50)
         .rotateY(theta * 50)
-        .project(size, size, size * 0.72, 3.2));
+        .project(size, size, size * 0.72, 3.2);
+      points.push(point);
+      minX = Math.min(minX, point.x);
+      maxX = Math.max(maxX, point.x);
+      minY = Math.min(minY, point.y);
+      maxY = Math.max(maxY, point.y);
+    }
+
+    // Perspective can make the projected bounding box drift away from the
+    // canvas center. Recenter the actual visible cube so it sits in the halo.
+    var offsetX = size / 2 - (minX + maxX) / 2;
+    var offsetY = size / 2 - (minY + maxY) / 2;
+    for (var p = 0; p < points.length; p++) {
+      points[p].x += offsetX;
+      points[p].y += offsetY;
     }
     return points;
   }
@@ -1868,16 +1913,14 @@
 
   function draw() {
     var size = resizeCanvas();
-    if (!drag) {
-      dX *= amortization;
-      dY *= amortization;
-      if (!reduceMotion) {
-        dX += 0.00016;
-        dY += 0.00007;
-      }
-      theta += dX;
-      phi += dY;
-    }
+    var now = performance.now();
+    shuffleBaseSpeed(now);
+    baseX += (targetX - baseX) * 0.018;
+    baseY += (targetY - baseY) * 0.018;
+    spinX *= spinAmortization;
+    spinY *= spinAmortization;
+    theta += baseX + spinX;
+    phi += baseY + spinY;
 
     ctx.clearRect(0, 0, size, size);
     ctx.save();
@@ -1913,30 +1956,46 @@
     var rect = canvas.getBoundingClientRect();
     return { x: e.clientX - rect.left, y: e.clientY - rect.top };
   }
+  function kickCube() {
+    if (reduceMotion) return;
+    targetX = randomSigned(0.010, 0.024);
+    targetY = randomSigned(0.006, 0.018);
+    spinX += randomSigned(0.055, 0.115);
+    spinY += randomSigned(0.035, 0.085);
+    nextSpeedShuffle = performance.now() + 900 + Math.random() * 900;
+  }
+
   canvas.addEventListener('pointerdown', function (e) {
     var p = pointerPoint(e);
-    drag = true;
+    pointerDown = true;
+    pointerMoved = false;
     oldX = p.x;
     oldY = p.y;
     try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
   });
   canvas.addEventListener('pointermove', function (e) {
-    if (!drag) return;
+    if (!pointerDown) return;
     var p = pointerPoint(e);
-    dX = (p.x - oldX) * 2 * Math.PI / Math.max(1, canvas.clientWidth || 600);
-    dY = (p.y - oldY) * 2 * Math.PI / Math.max(1, canvas.clientHeight || 600);
-    theta += dX;
-    phi += dY;
-    oldX = p.x;
-    oldY = p.y;
+    var moveX = p.x - oldX;
+    var moveY = p.y - oldY;
+    if ((moveX * moveX + moveY * moveY) > 64) pointerMoved = true;
   });
-  function endDrag(e) {
-    drag = false;
+  function endPointer(e) {
+    if (pointerDown && !pointerMoved) kickCube();
+    pointerDown = false;
+    pointerMoved = false;
     try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
   }
-  canvas.addEventListener('pointerup', endDrag);
-  canvas.addEventListener('pointercancel', endDrag);
-  canvas.addEventListener('pointerleave', endDrag);
+  canvas.addEventListener('pointerup', endPointer);
+  canvas.addEventListener('pointercancel', function (e) {
+    pointerDown = false;
+    pointerMoved = false;
+    try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
+  });
+  canvas.addEventListener('pointerleave', function () {
+    pointerDown = false;
+    pointerMoved = false;
+  });
   window.addEventListener('resize', resizeCanvas);
   draw();
 })();
