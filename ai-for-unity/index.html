@@ -680,10 +680,9 @@
         transparent 100%);
     }
     .slide-zx-end.scroll-split-owner::before {
-      background: linear-gradient(to bottom,
-        #050505 0%,
-        #050505 var(--scroll-fade-solid, calc(100% - 96px)), 
-        transparent 100%);
+      background:
+        radial-gradient(circle at 50% 45%, rgba(77, 220, 255, 0.18), transparent 36%),
+        linear-gradient(180deg, #050505 0%, #101010 48%, #050505 100%);
     }
     .scroll-split-owner.has-pinned-subhead::before {
       height: var(--scroll-fade-height, calc(
@@ -911,7 +910,7 @@
     inset: 0;
     z-index: -2;
     background:
-      radial-gradient(circle at var(--zx-cube-x) var(--zx-cube-y), rgba(77, 220, 255, 0.18), transparent 36%),
+      radial-gradient(circle at 50% 45%, rgba(77, 220, 255, 0.18), transparent 36%),
       linear-gradient(180deg, #050505 0%, #101010 48%, #050505 100%);
   }
   .slide-zx-end::after {
@@ -1000,6 +999,7 @@
   }
 
   .slide-scroll-content { display: contents; }
+  .scroll-split-owner { position: relative; }
   .mobile-swipe-hint { display: none; }
 
   @media (max-width: 760px) {
@@ -1091,10 +1091,9 @@
         transparent 100%);
     }
     .slide-zx-end.scroll-split-owner::before {
-      background: linear-gradient(to bottom,
-        #050505 0%,
-        #050505 var(--scroll-fade-solid, calc(100% - 80px)), 
-        transparent 100%);
+      background:
+        radial-gradient(circle at 50% 45%, rgba(77, 220, 255, 0.18), transparent 36%),
+        linear-gradient(180deg, #050505 0%, #101010 48%, #050505 100%);
     }
     .scroll-split-owner.has-pinned-subhead::before {
       height: var(--scroll-fade-height, calc(112px + clamp(34px, 10vw, 48px) + 24px + clamp(23.25px, 6.51vw, 31px) + 24px));
@@ -1235,8 +1234,16 @@
     .flow-graph { position: static !important; display: flex !important; width: 100%; justify-content: center; align-items: center; margin-top: 28px; }
     .flow-graph svg,
     .slide-goal .flow-graph svg { width: min(100%, 340px); height: auto; max-height: none; }
+    .slide-zx-end { overflow: hidden; }
     .slide-zx-end.scroll-split-owner > .slide-scroll-content { position: static; overflow: visible; }
-    .zx-demo { position: relative; left: auto; top: auto; translate: none; width: min(100%, 560px); margin: 32px auto 0; }
+    .slide-zx-end .zx-demo {
+      position: absolute;
+      left: 50%;
+      top: 57%;
+      translate: -50% -50%;
+      width: min(78vw, 44vh, 450px);
+      margin: 0;
+    }
 
     .ui-lane { padding: 18px; border-radius: 14px; }
     .ui-item { padding: 10px 12px 10px 36px; font-size: 16px; }
@@ -1874,7 +1881,7 @@
   </div>
 </section>
 
-<section class="slide slide-zx-end dark" data-screen-label="21 End" data-notes="Closing slide. A retro ZX Spectrum-inspired wireframe structure signals the end of the presentation.">
+<section class="slide slide-zx-end slide-no-scroll dark" data-screen-label="21 End" data-notes="Closing slide. A retro ZX Spectrum-inspired wireframe structure signals the end of the presentation.">
   <span class="slide-tag">The End</span>
   <h2 class="deck-headline">Thank You</h2>
   <p class="deck-subhead zx-end-subhead">Questions?</p>
