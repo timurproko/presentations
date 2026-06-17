@@ -317,8 +317,8 @@
   .mcp-tags .tag { font-family: var(--font-mono); font-size: clamp(13px, 1.05vw, 18px); letter-spacing: 0.02em; padding: 8px 16px; border-radius: 9999px; border: 1px solid var(--border); background: color-mix(in oklab, var(--accent), transparent 92%); color: var(--fg); white-space: nowrap; text-decoration: none; transition: background var(--motion-fast) var(--ease-standard), border-color var(--motion-fast) var(--ease-standard); }
   .mcp-tags a.tag:hover { background: color-mix(in oklab, var(--accent), transparent 80%); border-color: var(--accent); }
   .mcp-tags .tag-link { font-size: 1em; margin-right: 4px; opacity: 0.8; display: inline-block; transform: translateY(-2px); vertical-align: middle; }
-  .mcp-logo { position: absolute; right: clamp(64px, 7vw, 120px); top: 50%; transform: translateY(-50%); width: clamp(220px, 22vw, 360px); color: var(--fg); display: flex; flex-direction: column; align-items: center; gap: clamp(20px, 1.8vw, 32px); }
-  .mcp-logo .mcp-mark { width: clamp(140px, 14vw, 240px); height: auto; display: block; color: var(--fg); }
+  .mcp-logo { position: absolute; right: clamp(64px, 7vw, 120px); top: 50%; transform: translateY(-50%); width: clamp(150px, 15vw, 240px); color: var(--fg); display: flex; flex-direction: column; align-items: center; gap: clamp(14px, 1.2vw, 22px); }
+  .mcp-logo .mcp-mark { width: clamp(90px, 9vw, 150px); height: auto; display: block; color: var(--fg); }
   .mcp-logo .mcp-wordmark { width: 100%; height: auto; display: block; color: var(--fg); }
   .slide.dark .pill .tag { background: color-mix(in oklab, var(--bg), transparent 88%); color: var(--bg); border-color: color-mix(in oklab, var(--bg), transparent 70%); }
   .progression { display: flex; flex-direction: column; gap: 18px; margin-top: 48px; max-width: 1500px; }
@@ -546,6 +546,29 @@
   .animations-ready .flow-loop-dot { opacity: 0; }
   .animations-ready .slide.is-visible .flow-loop-dot { animation: dotReveal 900ms ease 1280ms both; }
   @media (prefers-reduced-motion: reduce) { .animations-ready .flow-loop-dot { opacity: 0.7 !important; } }
+
+  /* ── MCP logo draw-on reveal ── */
+  @keyframes mcpPieceReveal {
+    from { opacity: 0; transform: translateY(8px) scale(0.98); }
+    to   { opacity: 1; transform: none; }
+  }
+  .animations-ready .mcp-mark path {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .animations-ready .slide.is-visible .mcp-mark path {
+    animation: mcpPieceReveal 560ms var(--ease-spring) var(--md, 0ms) both;
+  }
+  .animations-ready .mcp-mark path:nth-of-type(2) { --md: 180ms; }
+  .animations-ready .mcp-wordmark { opacity: 0; }
+  .animations-ready .slide.is-visible .mcp-wordmark {
+    animation: fadeUp 600ms var(--ease-spring) 900ms both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animations-ready .mcp-mark path,
+    .animations-ready .mcp-wordmark { opacity: 1 !important; animation: none !important; transform: none !important; }
+  }
 
   .mobile-swipe-hint { display: none; }
 
@@ -987,8 +1010,8 @@
   <div class="mcp-logo" aria-label="Model Context Protocol">
     <svg class="mcp-mark" viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <title>ModelContextProtocol</title>
-      <path d="M15.688 2.343a2.588 2.588 0 00-3.61 0l-9.626 9.44a.863.863 0 01-1.203 0 .823.823 0 010-1.18l9.626-9.44a4.313 4.313 0 016.016 0 4.116 4.116 0 011.204 3.54 4.3 4.3 0 013.609 1.18l.05.05a4.115 4.115 0 010 5.9l-8.706 8.537a.274.274 0 000 .393l1.788 1.754a.823.823 0 010 1.18.863.863 0 01-1.203 0l-1.788-1.753a1.92 1.92 0 010-2.754l8.706-8.538a2.47 2.47 0 000-3.54l-.05-.049a2.588 2.588 0 00-3.607-.003l-7.172 7.034-.002.002-.098.097a.863.863 0 01-1.204 0 .823.823 0 010-1.18l7.273-7.133a2.47 2.47 0 00-.003-3.537z"/>
-      <path d="M14.485 4.703a.823.823 0 000-1.18.863.863 0 00-1.204 0l-7.119 6.982a4.115 4.115 0 000 5.9 4.314 4.314 0 006.016 0l7.12-6.982a.823.823 0 000-1.18.863.863 0 00-1.204 0l-7.119 6.982a2.588 2.588 0 01-3.61 0 2.47 2.47 0 010-3.54l7.12-6.982z"/>
+      <path pathLength="1" d="M15.688 2.343a2.588 2.588 0 00-3.61 0l-9.626 9.44a.863.863 0 01-1.203 0 .823.823 0 010-1.18l9.626-9.44a4.313 4.313 0 016.016 0 4.116 4.116 0 011.204 3.54 4.3 4.3 0 013.609 1.18l.05.05a4.115 4.115 0 010 5.9l-8.706 8.537a.274.274 0 000 .393l1.788 1.754a.823.823 0 010 1.18.863.863 0 01-1.203 0l-1.788-1.753a1.92 1.92 0 010-2.754l8.706-8.538a2.47 2.47 0 000-3.54l-.05-.049a2.588 2.588 0 00-3.607-.003l-7.172 7.034-.002.002-.098.097a.863.863 0 01-1.204 0 .823.823 0 010-1.18l7.273-7.133a2.47 2.47 0 00-.003-3.537z"/>
+      <path pathLength="1" d="M14.485 4.703a.823.823 0 000-1.18.863.863 0 00-1.204 0l-7.119 6.982a4.115 4.115 0 000 5.9 4.314 4.314 0 006.016 0l7.12-6.982a.823.823 0 000-1.18.863.863 0 00-1.204 0l-7.119 6.982a2.588 2.588 0 01-3.61 0 2.47 2.47 0 010-3.54l7.12-6.982z"/>
     </svg>
     <svg class="mcp-wordmark" viewBox="0 0 335 24" fill="currentColor" fill-rule="nonzero" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <title>ModelContextProtocol</title>
@@ -1055,7 +1078,19 @@
   </ul>
 </section>
 
-<section class="slide" data-screen-label="10 Mirror" data-notes="AI is a mirror. WYASWYG — What You Ask Is What You Get. WIASWYG — What Is Asked Shapes Output. Better input, better output. Garbage in, garbage out — at higher resolution than ever.">
+<section class="slide" data-screen-label="10 Model" data-notes="There is no universal model. The best model depends on the task, context, and constraints. Stronger is not always better: latency, cost, and determinism often beat raw capability. Match the model to the workflow, not the hype.">
+  <span class="slide-tag">Model</span>
+  <h2 class="deck-headline">There is no universal model</h2>
+  <p class="deck-subhead">Choose the right model for the job—not the most advanced one.</p>
+  <ul class="arrow-list tight">
+    <li>The “best” model depends on the task, context, and constraints</li>
+    <li>Stronger ≠ better for every use case</li>
+    <li>Latency, cost, and determinism often beat raw capability</li>
+    <li>Match model to workflow, not hype</li>
+  </ul>
+</section>
+
+<section class="slide" data-screen-label="11 Mirror" data-notes="AI is a mirror. WYASWYG — What You Ask Is What You Get. WIASWYG — What Is Asked Shapes Output. Better input, better output. Garbage in, garbage out — at higher resolution than ever.">
   <span class="slide-tag">Prompt · Engineering</span>
   <h2 class="deck-headline">AI reflects your intent</h2>
   <div class="pillar-grid" style="grid-template-columns: repeat(3, 1fr); max-width: 1400px;">
@@ -1324,7 +1359,6 @@
     var assigned = new Set();
     var hasTwoCol = !!slide.querySelector('.two-col');
     var rules = [
-      { sel: '.mcp-logo',           anim: 'fadeOnly', base: 0,   step: 0  },
       { sel: '.deck-headline',      anim: 'fadeUp',   base: 0,   step: 0  },
       { sel: '.deck-subhead',       anim: 'fadeUp',   base: 80,  step: 0  },
       { sel: '.mcp-tags-label',     anim: 'fadeUp',   base: 140, step: 0  },
