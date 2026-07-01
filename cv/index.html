@@ -919,7 +919,7 @@
       </div>
       <h1 id="page-title">Timur Prokopiev</h1>
       <p class="intro">
-        UX/XR Developer with 15+ years of experience across real-time 3D development, UX, and technical art for Mobile, XR, and Desktop. I focus on scalable architectures, rendering pipeline optimization, custom editor tools, procedural generation, and spatial UI systems that accelerate production workflows.
+        UX/XR Developer with <span data-experience-years data-start-date="2010-08-01">15+ years</span> of experience across real-time 3D development, UX, and technical art for Mobile, XR, and Desktop. I focus on scalable architectures, rendering pipeline optimization, custom editor tools, procedural generation, and spatial UI systems that accelerate production workflows.
       </p>
       <div class="quick-meta" aria-label="Profile highlights">
         <span class="chip">Gdańsk, Poland</span>
@@ -935,11 +935,17 @@
           <div class="card-inner">
             <div class="section-title">
               <h2 id="experience-title">Work Experience</h2>
-              <span class="section-kicker">2010 – 2025</span>
+              <span class="section-kicker" data-experience-range data-start-year="2010">2010 – 2026</span>
             </div>
             <div class="timeline">
               <article class="role">
-                <h3>Unity Developer</h3>
+                <h3>UX/XR Developer</h3>
+                <div class="date"><span data-current-role-duration data-start-date="2026-02-01">Feb 2026 – Present</span></div>
+                <p class="company"><strong>AMERIA AG</strong> • Contract</p>
+                <p>Designing and developing interactive UX/XR experiences, real-time 3D prototypes, and spatial interface systems.</p>
+              </article>
+              <article class="role">
+                <h3>XR Developer</h3>
                 <div class="date">Aug 2025 – Dec 2025</div>
                 <p class="company"><strong>Vital Sports</strong> • Contract</p>
                 <p>Led the design and engineering of a market-ready MVP, managing the full product lifecycle.</p>
@@ -951,7 +957,7 @@
                 <p>Developed cross-platform solutions for Android and iOS devices.</p>
               </article>
               <article class="role">
-                <h3>Unity Developer</h3>
+                <h3>XR Developer</h3>
                 <div class="date">Oct 2022 – Jun 2024</div>
                 <p class="company"><strong>SoftServe</strong> • Full-time</p>
                 <p>Developed enterprise-grade real-time training simulations for medical and automotive industries, focusing on reliability, performance, and R&amp;D-driven solutions.</p>
@@ -1126,7 +1132,68 @@
   </main>
   <script>
     const footerYear = document.querySelector("[data-footer-year]");
+    setupExperienceDates();
     setupFooterYearAnimation();
+
+    function setupExperienceDates() {
+      const now = new Date();
+
+      document.querySelectorAll("[data-experience-years]").forEach(element => {
+        const start = parseIsoDate(element.dataset.startDate);
+        if (!start) return;
+        const years = fullYearsBetween(start, now);
+        element.textContent = `${years}+ years`;
+      });
+
+      document.querySelectorAll("[data-experience-range]").forEach(element => {
+        const startYear = Number(element.dataset.startYear);
+        if (!startYear) return;
+        element.textContent = `${startYear} – ${now.getFullYear()}`;
+      });
+
+      document.querySelectorAll("[data-current-role-duration]").forEach(element => {
+        const start = parseIsoDate(element.dataset.startDate);
+        if (!start) return;
+        element.textContent = `${formatMonthYear(start)} – Present`;
+      });
+    }
+
+    function parseIsoDate(value) {
+      if (!value) return null;
+      const [year, month, day] = value.split("-").map(Number);
+      if (!year || !month) return null;
+      return new Date(year, month - 1, day || 1);
+    }
+
+    function fullYearsBetween(start, end) {
+      let years = end.getFullYear() - start.getFullYear();
+      const beforeAnniversary =
+        end.getMonth() < start.getMonth() ||
+        (end.getMonth() === start.getMonth() && end.getDate() < start.getDate());
+      if (beforeAnniversary) years -= 1;
+      return Math.max(0, years);
+    }
+
+    function fullMonthsBetween(start, end) {
+      let months = (end.getFullYear() - start.getFullYear()) * 12 + end.getMonth() - start.getMonth();
+      if (end.getDate() < start.getDate()) months -= 1;
+      return Math.max(0, months);
+    }
+
+    function formatDuration(start, end) {
+      const months = fullMonthsBetween(start, end);
+      if (months < 1) return "Less than 1 mo";
+      const years = Math.floor(months / 12);
+      const rest = months % 12;
+      const parts = [];
+      if (years) parts.push(`${years} yr${years === 1 ? "" : "s"}`);
+      if (rest) parts.push(`${rest} mo${rest === 1 ? "" : "s"}`);
+      return parts.join(" ");
+    }
+
+    function formatMonthYear(date) {
+      return date.toLocaleString("en", { month: "short", year: "numeric" });
+    }
 
     function setupFooterYearAnimation() {
       if (!footerYear) return;
