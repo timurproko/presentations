@@ -940,11 +940,8 @@
     z-index: -1;
     pointer-events: none;
     background:
-      radial-gradient(circle at 50% 50%, rgba(255,255,255,0.035), transparent 42%),
-      repeating-linear-gradient(0deg, rgba(255,255,255,0.07) 0 1px, transparent 1px 5px);
-    mix-blend-mode: screen;
-    opacity: 0.26;
-    animation: crtFlicker 1250ms steps(7, end) infinite;
+      radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03), transparent 46%);
+    opacity: 1;
   }
   .slide-zx-end.scroll-split-owner > .slide-scroll-content { position: static; }
   .zx-demo {
@@ -971,14 +968,12 @@
     width: 100%;
     height: 100%;
     touch-action: manipulation;
-    filter: drop-shadow(2px 0 #ff004d) drop-shadow(-2px 0 #ff4d6d) drop-shadow(0 0 14px rgba(255,255,255,0.28));
+    filter: drop-shadow(0 0 18px rgba(224,36,94,0.20));
   }
   .animations-ready .zx-cube-canvas,
   .animations-ready .zx-word { opacity: 0; }
   .animations-ready .slide-zx-end.is-visible .zx-cube-canvas {
-    animation:
-      zxPop 760ms var(--ease-spring) 120ms both,
-      zxHue 1900ms steps(6, end) 900ms infinite;
+    animation: zxPop 760ms var(--ease-spring) 120ms both;
   }
   .animations-ready .slide-zx-end.is-visible .zx-word {
     animation: fadeUp 520ms var(--ease-spring) var(--zx-delay, 0ms) both;
@@ -993,35 +988,8 @@
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: #f8f8f9;
-    text-shadow: 2px 0 #ff004d, -2px 0 #ff4d6d, 0 0 18px rgba(255,255,255,0.35);
   }
-  .zx-tap-compute {
-    --tap-x: 50%;
-    --tap-y: 50%;
-    position: absolute;
-    left: var(--tap-x);
-    top: var(--tap-y);
-    z-index: 2;
-    display: block;
-    opacity: 0;
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    font-family: var(--font-mono);
-    font-size: clamp(11px, 0.9vw, 15px);
-    line-height: 1;
-    letter-spacing: 0.22em;
-    text-align: center;
-    text-transform: uppercase;
-    white-space: nowrap;
-    color: #f8f8f9;
-    mix-blend-mode: screen;
-    filter: drop-shadow(0 0 2px rgba(255,255,255,0.18));
-    will-change: opacity, transform, color, text-shadow;
-  }
-  .zx-tap-compute .mobile-label { display: none; }
-  .animations-ready .slide-zx-end.is-visible .zx-tap-compute.is-active {
-    animation: zxTapComputeBurst 2600ms steps(7, end) both;
-  }
+  .zx-tap-compute { display: none; }
   .slide-zx-end .deck-headline { color: #f8f8f9; }
   .slide-zx-end .deck-subhead { color: color-mix(in oklab, #f8f8f9, transparent 30%); }
   .zx-end-subhead { color: color-mix(in oklab, #f8f8f9, transparent 30%); }
@@ -1029,36 +997,10 @@
     from { opacity: 0; transform: translateY(14px) scale(0.96); }
     to { opacity: 1; transform: none; }
   }
-  @keyframes zxHue {
-    0%, 100% { filter: drop-shadow(2px 0 #ff004d) drop-shadow(-2px 0 #ff4d6d) drop-shadow(0 0 12px rgba(255,255,255,0.30)); }
-    25% { filter: drop-shadow(2px 0 #ffdd00) drop-shadow(-2px 0 #00ff66) drop-shadow(0 0 12px rgba(255,255,255,0.30)); }
-    50% { filter: drop-shadow(2px 0 #ff4d6d) drop-shadow(-2px 0 #ff8fab) drop-shadow(0 0 12px rgba(255,255,255,0.30)); }
-    75% { filter: drop-shadow(2px 0 #ff00ff) drop-shadow(-2px 0 #ff7a00) drop-shadow(0 0 12px rgba(255,255,255,0.30)); }
-  }
-  @keyframes zxTapComputeBurst {
-    0% { opacity: 0; transform: translate(-50%, -50%) translateY(8px) scale(0.92); color: #ff4d6d; text-shadow: 0.45px 0 #ff004d, -0.45px 0 #ff4d6d, 0 0 5px rgba(255,255,255,0.12); }
-    12% { opacity: 1; transform: translate(-50%, -50%) translateY(0) scale(1); color: #f8f8f9; text-shadow: 0.45px 0 #ff004d, -0.45px 0 #ff4d6d, 0 0 7px rgba(255,255,255,0.26); }
-    28% { opacity: 0.94; color: #ffdd00; text-shadow: 0.45px 0 #00ff66, -0.45px 0 #ff004d, 0 0 6px rgba(255,221,0,0.2); }
-    44% { opacity: 1; color: #00ff66; text-shadow: 0.45px 0 #ff4d6d, -0.45px 0 #ff00ff, 0 0 6px rgba(0,255,102,0.22); }
-    62% { opacity: 0.95; color: #ff00ff; text-shadow: 0.45px 0 #ffdd00, -0.45px 0 #ff4d6d, 0 0 7px rgba(255,0,255,0.2); }
-    78% { opacity: 1; color: #f8f8f9; text-shadow: 0.45px 0 #ff004d, -0.45px 0 #ff4d6d, 0 0 7px rgba(255,255,255,0.24); }
-    100% { opacity: 0; transform: translate(-50%, -50%) translateY(-10px) scale(1.04); color: #ff7a00; text-shadow: 0.45px 0 #ff4d6d, -0.45px 0 #ff004d, 0 0 1px rgba(255,255,255,0); }
-  }
-  @keyframes crtFlicker {
-    0%, 100% { opacity: 0.22; transform: translateY(0); }
-    10% { opacity: 0.30; }
-    24% { opacity: 0.19; }
-    39% { opacity: 0.28; transform: translateY(0.75px); }
-    56% { opacity: 0.21; }
-    72% { opacity: 0.31; transform: translateY(-0.75px); }
-    88% { opacity: 0.24; }
-  }
   @media (prefers-reduced-motion: reduce) {
     .slide-zx-end::after,
     .animations-ready .zx-cube-canvas,
     .animations-ready .zx-word { opacity: 1 !important; animation: none !important; transform: none !important; }
-    .slide-zx-end::after { opacity: 0.26 !important; }
-    .zx-tap-compute { animation: none !important; }
   }
 
   .slide-scroll-content { display: contents; }
@@ -1360,12 +1302,6 @@
       width: min(78vw, 44vh, 450px);
       margin: 0;
     }
-    .slide-zx-end .zx-tap-compute {
-      font-size: clamp(10px, 2.9vw, 13px);
-      letter-spacing: 0.2em;
-    }
-    .zx-tap-compute .desktop-label { display: none; }
-    .zx-tap-compute .mobile-label { display: inline; }
 
     .ui-lane { padding: 18px; border-radius: 14px; }
     .ui-item { padding: 10px 12px 10px 36px; font-size: 16px; }
@@ -1847,7 +1783,6 @@
     <div class="zx-cube-frame">
       <canvas class="zx-cube-canvas" id="zxCanvasCube" width="600" height="600"></canvas>
     </div>
-    <div class="zx-tap-compute"><span class="desktop-label">CLICK TO PULSE</span><span class="mobile-label">TAP TO PULSE</span></div>
   </div>
 </section>
 
@@ -1858,38 +1793,40 @@
   var canvas = document.getElementById('zxCanvasCube');
   if (!canvas || !canvas.getContext) return;
   var ctx = canvas.getContext('2d');
-  var tapCompute = document.querySelector('.zx-tap-compute');
-  var endSlide = canvas.closest('.slide-zx-end');
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var particles = [];
-  var pulseBoost = 0;
-  var tapComputeActive = false;
-  var tapComputeHideTimer = 0;
 
-  function heartInside(x, y) {
+  function heartField(x, y) {
     var a = x * x + y * y - 1;
-    return (a * a * a - x * x * y * y * y) <= 0;
+    return a * a * a - x * x * y * y * y;
+  }
+
+  function makeParticle(x, y, rim) {
+    return {
+      x: x,
+      y: y,
+      rim: rim,
+      r: rim ? (0.9 + Math.random() * 1.25) : (0.7 + Math.random() * 1.5),
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.55 + Math.random() * 0.9,
+      alpha: rim ? (0.7 + Math.random() * 0.3) : (0.28 + Math.random() * 0.34)
+    };
   }
 
   function buildParticles() {
     particles = [];
-    var targetCount = 360;
-    var attempts = 0;
-    while (particles.length < targetCount && attempts < 12000) {
+    var rimTarget = 320, fillTarget = 230, nRim = 0, nFill = 0, attempts = 0;
+    while ((nRim < rimTarget || nFill < fillTarget) && attempts < 60000) {
       attempts++;
-      var x = -1.35 + Math.random() * 2.7;
-      var y = -1.22 + Math.random() * 2.58;
-      if (!heartInside(x, y)) continue;
-      var edge = Math.pow(Math.min(1, Math.hypot(x * 0.82, y * 0.9)), 1.35);
-      particles.push({
-        x: x,
-        y: y,
-        z: 0.42 + edge * 0.72 + Math.random() * 0.2,
-        r: 1.25 + Math.random() * 2.35,
-        phase: Math.random() * Math.PI * 2,
-        speed: 0.75 + Math.random() * 1.35,
-        alpha: 0.42 + Math.random() * 0.46
-      });
+      var x = -1.3 + Math.random() * 2.6;
+      var y = -1.32 + Math.random() * 2.5;
+      var v = heartField(x, y);
+      if (v > 0) continue;
+      if (v > -0.05) {
+        if (nRim < rimTarget) { nRim++; particles.push(makeParticle(x, y, true)); }
+      } else if (nFill < fillTarget) {
+        nFill++; particles.push(makeParticle(x, y, false));
+      }
     }
   }
 
@@ -1906,73 +1843,10 @@
     return size;
   }
 
-  function isEndSlideVisible() { return !!endSlide && endSlide.classList.contains('is-visible'); }
-
-  function hideTapComputeText() {
-    if (!tapCompute) return;
-    tapComputeActive = false;
-    if (tapComputeHideTimer) window.clearTimeout(tapComputeHideTimer);
-    tapComputeHideTimer = 0;
-    tapCompute.classList.remove('is-active');
-    tapCompute.style.opacity = '0';
-  }
-
-  function burstTapCompute() {
-    if (!tapCompute || reduceMotion || tapComputeActive || !isEndSlideVisible()) return;
-    tapComputeActive = true;
-    tapCompute.style.opacity = '';
-    tapCompute.style.setProperty('--tap-x', '50%');
-    tapCompute.style.setProperty('--tap-y', '106%');
-    tapCompute.classList.remove('is-active');
-    void tapCompute.offsetWidth;
-    tapCompute.classList.add('is-active');
-    tapComputeHideTimer = window.setTimeout(hideTapComputeText, 2680);
-  }
-
-  if (tapCompute) {
-    tapCompute.addEventListener('animationend', function (e) {
-      if (e.animationName === 'zxTapComputeBurst') hideTapComputeText();
-    });
-  }
-
-  function scheduleTapCompute() {
-    if (!tapCompute) return;
-    window.setTimeout(function () {
-      if (!tapComputeActive) burstTapCompute();
-      scheduleTapCompute();
-    }, 6200);
-  }
-  scheduleTapCompute();
-
-  function kickHeart() {
-    pulseBoost = Math.min(1, pulseBoost + 0.86);
-    burstTapCompute();
-  }
-
-  var pointerDown = false, pointerMoved = false, oldX = 0, oldY = 0;
-  canvas.addEventListener('pointerdown', function (e) {
-    pointerDown = true; pointerMoved = false; oldX = e.clientX; oldY = e.clientY;
-    try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
-  });
-  canvas.addEventListener('pointermove', function (e) {
-    if (!pointerDown) return;
-    if (Math.abs(e.clientX - oldX) + Math.abs(e.clientY - oldY) > 6) pointerMoved = true;
-  });
-  canvas.addEventListener('pointerup', function (e) {
-    if (pointerDown && !pointerMoved) kickHeart();
-    pointerDown = false; pointerMoved = false;
-    try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
-  });
-  canvas.addEventListener('pointercancel', function (e) {
-    pointerDown = false; pointerMoved = false;
-    try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
-  });
-  canvas.addEventListener('pointerleave', function () { pointerDown = false; pointerMoved = false; });
-
   function drawGlow(cx, cy, size, beat) {
-    var glow = ctx.createRadialGradient(cx, cy, size * 0.04, cx, cy, size * (0.44 + beat * 0.05));
-    glow.addColorStop(0, 'rgba(224,36,94,0.24)');
-    glow.addColorStop(0.45, 'rgba(224,36,94,0.10)');
+    var glow = ctx.createRadialGradient(cx, cy, size * 0.03, cx, cy, size * (0.34 + beat * 0.03));
+    glow.addColorStop(0, 'rgba(224,36,94,0.16)');
+    glow.addColorStop(0.5, 'rgba(224,36,94,0.06)');
     glow.addColorStop(1, 'rgba(224,36,94,0)');
     ctx.fillStyle = glow;
     ctx.fillRect(0, 0, size, size);
@@ -1982,31 +1856,26 @@
     var size = resizeCanvas();
     var t = now * 0.001;
     ctx.clearRect(0, 0, size, size);
-    var heartbeat = reduceMotion ? 0 : Math.pow(Math.max(0, Math.sin(t * Math.PI * 1.42)), 10);
-    pulseBoost *= reduceMotion ? 0 : 0.93;
-    var beat = Math.min(1, heartbeat + pulseBoost);
-    var scale = size * (0.255 + beat * 0.018);
+    var beat = reduceMotion ? 0 : Math.pow(Math.max(0, Math.sin(t * Math.PI * 1.35)), 8);
+    var scale = size * (0.3 + beat * 0.012);
     var cx = size * 0.5;
-    var cy = size * 0.52;
+    var cy = size * 0.46;
     drawGlow(cx, cy, size, beat);
-    particles.sort(function (a, b) { return a.z - b.z; });
     for (var i = 0; i < particles.length; i++) {
       var p = particles[i];
-      var shimmer = reduceMotion ? 0 : Math.sin(t * p.speed + p.phase);
-      var px = cx + p.x * scale * (1 + beat * 0.10) + (reduceMotion ? 0 : Math.sin(t * 1.7 + p.phase) * 2.4);
-      var py = cy - p.y * scale * (1 + beat * 0.10) + (reduceMotion ? 0 : Math.cos(t * 1.35 + p.phase * 1.2) * 2.1);
-      var alpha = Math.min(1, p.alpha + beat * 0.34 + shimmer * 0.12);
-      var radius = p.r * (0.82 + p.z * 0.34 + beat * 0.32);
+      var drift = reduceMotion ? 0 : Math.sin(t * p.speed + p.phase) * 0.9;
+      var px = cx + p.x * scale * (1 + beat * 0.06);
+      var py = cy - p.y * scale * (1 + beat * 0.06) + drift;
+      var shimmer = reduceMotion ? 0 : Math.sin(t * p.speed + p.phase) * 0.08;
+      var alpha = Math.min(1, p.alpha + beat * 0.28 + shimmer);
+      var radius = p.r * (0.9 + beat * 0.22);
       ctx.beginPath();
       ctx.arc(px, py, radius, 0, Math.PI * 2);
-      ctx.fillStyle = i % 7 === 0 ? 'rgba(255,143,171,' + (alpha * 0.82).toFixed(3) + ')' : 'rgba(248,248,249,' + alpha.toFixed(3) + ')';
+      ctx.fillStyle = (i % 9 === 0)
+        ? 'rgba(224,36,94,' + (alpha * 0.9).toFixed(3) + ')'
+        : 'rgba(240,242,245,' + alpha.toFixed(3) + ')';
       ctx.fill();
     }
-    ctx.beginPath();
-    ctx.arc(cx, cy, size * (0.16 + beat * 0.035), 0, Math.PI * 2);
-    ctx.strokeStyle = 'rgba(224,36,94,' + (0.08 + beat * 0.14).toFixed(3) + ')';
-    ctx.lineWidth = 1.4;
-    ctx.stroke();
     window.requestAnimationFrame(draw);
   }
 

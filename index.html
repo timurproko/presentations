@@ -693,11 +693,16 @@
       "touch-my-heart": "Touch My Heart\nXR Experience",
       "cv": "UX/XR Developer\nCV"
     };
+    const DESCRIPTION_OVERRIDES = {
+      "ai-for-unity": "How AI is reshaping Unity development—from coding to fully agentic workflows.",
+      "touch-my-heart": "An XR experience for Magic Leap that takes users deep inside the human heart — realistic anatomy and the sounds of heart disease.",
+      "cv": "Building interactive experiences with a focus on usability, performance, and real-time systems."
+    };
     const DEFAULT_PREVIEW_VIEWPORT = { width: 1920, height: 1080 };
     const PREVIEW_VIEWPORTS = {
       cv: { width: 900, height: 900 }
     };
-    const DEFAULT_DESCRIPTION = "An XR journey inside the human heart, built for Magic Leap.";
+    const DEFAULT_DESCRIPTION = "Interactive work, experiments, and ideas across technologies.";
 
     const grid = document.getElementById("presentations");
     const count = document.getElementById("count");
@@ -1074,6 +1079,7 @@
 
     async function loadPresentationMeta(file) {
       const fallbackTitle = TITLE_OVERRIDES[file] || titleFromFile(file);
+      const fallbackDescription = DESCRIPTION_OVERRIDES[file] || DEFAULT_DESCRIPTION;
       try {
         const response = await fetch(cacheBustedUrl(file, "meta"), { cache: "no-store" });
         if (!response.ok) throw new Error("Unable to fetch presentation");
@@ -1083,10 +1089,10 @@
         const description =
           doc.querySelector('meta[name="description"]')?.content?.trim() ||
           doc.querySelector("h1")?.textContent?.trim() ||
-          DEFAULT_DESCRIPTION;
+          fallbackDescription;
         return { file, title, description };
       } catch (error) {
-        return { file, title: fallbackTitle, description: DEFAULT_DESCRIPTION };
+        return { file, title: fallbackTitle, description: fallbackDescription };
       }
     }
 
