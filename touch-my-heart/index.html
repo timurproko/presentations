@@ -701,7 +701,7 @@
     }
     .slide-zx-end.scroll-split-owner::before {
       background:
-        radial-gradient(circle at 50% 45%, rgba(224, 36, 94, 0.18), transparent 36%),
+        radial-gradient(circle at 50% 45%, rgba(255, 0, 0, 0.42), rgba(230, 10, 10, 0.16) 26%, transparent 46%),
         linear-gradient(180deg, #050505 0%, #101010 48%, #050505 100%);
     }
     .scroll-split-owner.has-pinned-subhead::before {
@@ -930,7 +930,7 @@
     inset: 0;
     z-index: -2;
     background:
-      radial-gradient(circle at 50% 45%, rgba(224, 36, 94, 0.18), transparent 36%),
+      radial-gradient(circle at 50% 45%, rgba(255, 0, 0, 0.42), rgba(230, 10, 10, 0.16) 26%, transparent 46%),
       linear-gradient(180deg, #050505 0%, #101010 48%, #050505 100%);
   }
   .slide-zx-end::after {
@@ -1097,7 +1097,7 @@
     }
     .slide-zx-end.scroll-split-owner::before {
       background:
-        radial-gradient(circle at 50% 45%, rgba(224, 36, 94, 0.18), transparent 36%),
+        radial-gradient(circle at 50% 45%, rgba(255, 0, 0, 0.42), rgba(230, 10, 10, 0.16) 26%, transparent 46%),
         linear-gradient(180deg, #050505 0%, #101010 48%, #050505 100%);
     }
     .scroll-split-owner.has-pinned-subhead::before {
@@ -1548,14 +1548,26 @@
   }
 
   /* Touch My Heart — media placeholders & content grids */
-  .media-ph { position: relative; width: 100%; height: 100%; min-height: 0; border: 1px solid var(--border); border-radius: 20px; background-image: repeating-linear-gradient(135deg, color-mix(in oklab, var(--fg), transparent 92%) 0, color-mix(in oklab, var(--fg), transparent 92%) 12px, color-mix(in oklab, var(--fg), transparent 96%) 12px, color-mix(in oklab, var(--fg), transparent 96%) 26px); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .media-ph { position: relative; width: 100%; height: 100%; min-height: 0; border: 1px solid var(--border); border-radius: 20px; background-image: repeating-linear-gradient(135deg, color-mix(in oklab, var(--fg), transparent 92%) 0, color-mix(in oklab, var(--fg), transparent 92%) 12px, color-mix(in oklab, var(--fg), transparent 96%) 12px, color-mix(in oklab, var(--fg), transparent 96%) 26px); display: flex; align-items: center; justify-content: center; overflow: hidden; transform: translateZ(0); transform-origin: center; transition: box-shadow var(--motion-hover) var(--ease-standard), filter var(--motion-hover) var(--ease-standard); }
   .slide.dark .media-ph { background-image: repeating-linear-gradient(135deg, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 12px, rgba(255,255,255,0.02) 12px, rgba(255,255,255,0.02) 26px); }
+  .media-ph:hover,
+  .media-ph:focus-within,
+  .state:hover .media-ph,
+  .col-media:hover .media-ph {
+    z-index: 2;
+    border-color: oklch(85% 0.005 250);
+    box-shadow: 0 22px 70px rgba(17,17,17,0.30), 0 4px 18px rgba(17,17,17,0.14);
+  }
   .media-ph .ph-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 10px 20px; font-family: var(--font-mono); font-size: clamp(11px, 0.9vw, 15px); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
   .media-ph.parallax-media { --pan-x: 0px; --pan-y: 0px; background-image: none; background-color: var(--surface); cursor: zoom-in; box-shadow: none; transform: translateZ(0); transition: transform var(--motion-hover) var(--ease-spring), border-color var(--motion-fast) var(--ease-standard), box-shadow var(--motion-hover) var(--ease-standard); }
   .media-ph.parallax-media:hover,
-  .media-ph.parallax-media.is-active { z-index: 2; border-color: var(--border); box-shadow: 0 14px 38px rgba(17,17,17,0.12); transform: translateY(-2px); }
+  .media-ph.parallax-media.is-active { z-index: 2; border-color: oklch(85% 0.005 250); box-shadow: 0 22px 70px rgba(17,17,17,0.30), 0 4px 18px rgba(17,17,17,0.14); transform: translateZ(0); }
   .media-ph.parallax-media img { display: block; width: 100%; height: 100%; object-fit: cover; transform: translate3d(0,0,0) scale(1.34); transform-origin: center; transition: transform 520ms var(--ease-spring), filter var(--motion-hover) var(--ease-standard); will-change: transform; pointer-events: none; user-select: none; }
-  .media-ph video { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; }
+  .media-ph video { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; transform: scale(1); transform-origin: center; transition: transform 520ms var(--ease-spring); }
+  .media-ph:hover video,
+  .media-ph:focus-within video,
+  .state:hover .media-ph video,
+  .col-media:hover .media-ph video { transform: scale(1.06); }
   .media-ph.parallax-media:hover img,
   .media-ph.parallax-media.is-active img { transform: translate3d(var(--pan-x), var(--pan-y), 0) scale(1.62); filter: saturate(1.04) contrast(1.02); }
   [data-screen-label="07 Prototype"] .split-media,
@@ -1573,9 +1585,18 @@
   .split-media .col-text { display: flex; flex-direction: column; min-width: 0; }
   .split-media .col-media { position: relative; width: 100%; height: 100%; min-height: min(500px, 42vh); }
   .state-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 1.8vw, 28px); flex: 1; min-height: 0; margin-top: clamp(24px, 2.2vw, 40px); }
-  .state-grid .state { display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+  .state-grid .state { display: flex; flex-direction: column; gap: clamp(14px, 1.3vw, 22px); min-height: 0; }
   .state-grid .state .media-ph { flex: 1; }
-  .state-grid .state .state-label { text-align: center; font-family: var(--font-display); font-weight: 600; font-size: clamp(18px, 1.4vw, 26px); letter-spacing: -0.01em; color: var(--fg); }
+  .state-grid .state .media-ph video,
+  [data-screen-label="10 Shading"] .media-ph video { object-fit: contain; }
+  [data-screen-label="10 Shading"] .media-ph {
+    background-color: #d8d8d8;
+    background-image: none;
+  }
+  [data-screen-label="10 Shading"] .media-ph video {
+    background-color: #d8d8d8;
+  }
+  .state-grid .state .state-label { order: -1; width: min(280px, 100%); max-width: 100%; margin: 0 auto; text-wrap: balance; text-align: center; font-family: var(--font-display); font-weight: 600; font-size: clamp(17px, 1.35vw, 26px); line-height: 1.2; letter-spacing: -0.01em; color: var(--fg); }
   .cond-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(18px, 1.8vw, 28px); flex: 0 0 auto; min-height: 0; margin-top: clamp(-32px, -1.45vw, -18px); }
   .cond-card { border: 1px solid var(--border); border-radius: 20px; background: var(--surface); padding: clamp(20px,1.6vw,30px); display: flex; flex-direction: column; gap: clamp(16px,1.3vw,22px); min-height: 0; transition: transform var(--motion-hover) var(--ease-spring), border-color var(--motion-fast) var(--ease-standard), box-shadow var(--motion-hover) var(--ease-standard); }
   .cond-card:hover { z-index: 2; box-shadow: 0 14px 38px rgba(17,17,17,0.12); transform: translateY(-2px); }
@@ -1659,7 +1680,7 @@
 <section class="slide" data-screen-label="02 About" data-notes="Touch My Heart is an immersive AR application on Magic Leap — a realistic, educational encounter with the heart's anatomy and the sounds of various diseases. Three pillars: the AR glasses, haptics, and medically accurate visualization and sound.">
   <span class="slide-tag">About · Project</span>
   <h2 class="deck-headline">Inside the human heart</h2>
-  <p class="deck-subhead">A cutting-edge XR experience that takes users deep into the inner workings of the human heart — a realistic, educational encounter with its anatomy and the sound of various diseases.</p>
+  <p class="deck-subhead">A cutting-edge XR experience that takes users deep into the inner workings of the human heart —<br>a realistic, educational encounter with its anatomy and the sound of various diseases.</p>
   <div class="pillar-grid">
     <div class="pill"><div class="pill-illo"><svg class="illo-svg" viewBox="0 0 92 60" aria-hidden="true"><path class="stroke faint" d="M12 20 Q46 4 80 20"/><path class="stroke" d="M10 34 h72 a4 4 0 0 1 4 4 v6 a10 10 0 0 1 -10 10 H16 a10 10 0 0 1 -10 -10 v-6 a4 4 0 0 1 4 -4 Z"/><path class="stroke faint" d="M46 34 V54"/><circle class="accent fill" cx="27" cy="44" r="7"/><circle class="accent fill" cx="65" cy="44" r="7"/></svg></div><div class="num">/01</div><h4>Magic Leap AR glasses</h4><div class="subhead">Spatial anatomy rendered in the user's real environment.</div><div class="tags"><span class="tag">AR</span><span class="tag">Spatial</span></div></div>
     <div class="pill"><div class="pill-illo"><svg class="illo-svg" viewBox="0 0 76 60" aria-hidden="true"><path class="stroke" d="M38 58 V34"/><circle class="accent fill" cx="38" cy="28" r="6"/><path class="accent" d="M24 27 a14 14 0 0 1 28 0"/><path class="accent faint" d="M16 26 a22 22 0 0 1 44 0"/><path class="accent faint" d="M8 25 a30 30 0 0 1 60 0"/></svg></div><div class="num">/02</div><h4>Ultraleap haptics</h4><div class="subhead">Mid-air touch — feel the heartbeat with your bare hands.</div><div class="tags"><span class="tag">Haptics</span><span class="tag">Hand tracking</span></div></div>
@@ -1686,7 +1707,7 @@
 <section class="slide" data-screen-label="04 Platforms" data-notes="To stay current with the XR industry I surveyed design guidelines across the major platforms. Apple Vision Pro had just been announced with detailed design material, so it became a primary reference. Magic Leap was our delivery target.">
   <span class="slide-tag">Process · Platforms Research</span>
   <h2 class="deck-headline">Learning from XR platforms</h2>
-  <p class="deck-subhead">I studied design guidelines across the major platforms. With Apple Vision Pro freshly announced, its interaction patterns became a primary reference point.</p>
+  <p class="deck-subhead">I studied design guidelines across the major platforms. With Apple Vision Pro freshly announced,<br>its interaction patterns became a primary reference point.</p>
   <div class="pillar-grid platform-grid">
     <div class="pill"><div class="device-preview"><img src="assets/apple-vision.webp" alt="Apple Vision Pro device preview" loading="lazy"></div><div class="num" style="color:#c81d3f">REFERENCE</div><h4>Apple Vision Pro</h4><div class="subhead">Freshly announced, richly documented interaction model.</div></div>
     <div class="pill"><div class="device-preview"><img src="assets/meta-quest.webp" alt="Meta Quest device preview" loading="lazy"></div><div class="num" style="color:#c81d3f">REFERENCE</div><h4>Meta Quest</h4><div class="subhead">Mature hand-tracking and comfort guidelines.</div></div>
@@ -1708,7 +1729,7 @@
 <section class="slide" data-screen-label="06 UX Concept" data-notes="I focused on a concept of user experience that transcends the technology and encompasses the full spectrum of human interaction within the application.">
   <span class="slide-tag">Design · Experience Concept</span>
   <h2 class="deck-headline">Beyond the technology</h2>
-  <p class="deck-subhead">The concept had to transcend the hardware — designing for the full spectrum of human interaction inside the application.</p>
+  <p class="deck-subhead">The concept had to transcend the hardware — designing for the full spectrum<br>of human interaction inside the application.</p>
   <ul class="arrow-list tight">
     <li>Human-centered interaction, not device-centered</li>
     <li>Natural gestures paired with haptic feedback</li>
@@ -1739,7 +1760,7 @@
     <div class="col-text">
       <p class="deck-subhead" style="margin-top:0">A non-destructive procedural workflow drives the heart model — realistic enough for medicine, flexible enough to refine each disease animation without rebuilding.</p>
     </div>
-    <div class="col-media"><div class="media-ph" aria-label="Procedural heart wireframe modelling video"><video src="assets/wireframe.mp4" autoplay muted loop playsinline preload="metadata"></video></div></div>
+    <div class="col-media"><div class="media-ph" aria-label="Procedural heart wireframe modelling video"><video src="assets/wireframe.mp4" muted loop playsinline preload="metadata"></video></div></div>
   </div>
 </section>
 
@@ -1747,9 +1768,9 @@
   <span class="slide-tag">3D · Heart States</span>
   <h2 class="deck-headline">One model, three conditions</h2>
   <div class="state-grid">
-    <div class="state"><div class="media-ph"><span class="ph-chip">render</span></div><div class="state-label">Normal heart</div></div>
-    <div class="state"><div class="media-ph"><span class="ph-chip">render</span></div><div class="state-label">Aortic stenosis</div></div>
-    <div class="state"><div class="media-ph"><span class="ph-chip">render</span></div><div class="state-label">Atrial fibrillation</div></div>
+    <div class="state"><div class="media-ph" aria-label="Normal heart condition video preview"><video src="assets/condition_normal.mp4" muted loop playsinline preload="metadata"></video></div><div class="state-label">Normal heart</div></div>
+    <div class="state"><div class="media-ph" aria-label="Aortic stenosis condition video preview"><video src="assets/condition_as.mp4" muted loop playsinline preload="metadata"></video></div><div class="state-label">Aortic stenosis</div></div>
+    <div class="state"><div class="media-ph" aria-label="Atrial fibrillation condition video preview"><video src="assets/condition_af.mp4" muted loop playsinline preload="metadata"></video></div><div class="state-label">Atrial fibrillation</div></div>
   </div>
 </section>
 
@@ -1760,7 +1781,7 @@
     <div class="col-text">
       <p class="deck-subhead" style="margin-top:0">Procedural shader graphs defined the ultimate appearance and texture for real-time — including interactive slicing of the heart across any axis.</p>
     </div>
-    <div class="col-media"><div class="media-ph" aria-label="Real-time rendered heart shader preview video"><video src="assets/render.mp4" autoplay muted loop playsinline preload="metadata"></video></div></div>
+    <div class="col-media"><div class="media-ph" aria-label="Real-time rendered heart shader preview video"><video src="assets/render.mp4" muted loop playsinline preload="metadata"></video></div></div>
   </div>
 </section>
 
@@ -1796,11 +1817,6 @@
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var particles = [];
 
-  function heartField(x, y) {
-    var a = x * x + y * y - 1;
-    return a * a * a - x * x * y * y * y;
-  }
-
   function makeParticle(x, y, rim) {
     return {
       x: x,
@@ -1808,25 +1824,62 @@
       rim: rim,
       r: rim ? (0.9 + Math.random() * 1.25) : (0.7 + Math.random() * 1.5),
       phase: Math.random() * Math.PI * 2,
-      speed: 0.55 + Math.random() * 0.9,
+      phaseY: Math.random() * Math.PI * 2,
+      speed: 0.4 + Math.random() * 0.7,
+      speedY: 0.35 + Math.random() * 0.65,
+      ax: (rim ? 0.02 : 0.05) + Math.random() * (rim ? 0.03 : 0.06),
+      ay: (rim ? 0.02 : 0.05) + Math.random() * (rim ? 0.03 : 0.06),
       alpha: rim ? (0.7 + Math.random() * 0.3) : (0.28 + Math.random() * 0.34)
     };
   }
 
   function buildParticles() {
     particles = [];
-    var rimTarget = 320, fillTarget = 230, nRim = 0, nFill = 0, attempts = 0;
-    while ((nRim < rimTarget || nFill < fillTarget) && attempts < 60000) {
-      attempts++;
-      var x = -1.3 + Math.random() * 2.6;
-      var y = -1.32 + Math.random() * 2.5;
-      var v = heartField(x, y);
-      if (v > 0) continue;
-      if (v > -0.05) {
-        if (nRim < rimTarget) { nRim++; particles.push(makeParticle(x, y, true)); }
-      } else if (nFill < fillTarget) {
-        nFill++; particles.push(makeParticle(x, y, false));
+    var poly = [];
+    var STEPS = 300;
+    var raw = [];
+    var minX = 1e9, maxX = -1e9, minY = 1e9, maxY = -1e9;
+    for (var s = 0; s < STEPS; s++) {
+      var th = (s / STEPS) * Math.PI * 2;
+      var x = 16 * Math.pow(Math.sin(th), 3);
+      var y = 13 * Math.cos(th) - 5 * Math.cos(2 * th) - 2 * Math.cos(3 * th) - Math.cos(4 * th);
+      raw.push([x, y]);
+      if (x < minX) minX = x; if (x > maxX) maxX = x;
+      if (y < minY) minY = y; if (y > maxY) maxY = y;
+    }
+    var cX = (minX + maxX) / 2, cY = (minY + maxY) / 2;
+    var half = Math.max(maxX - minX, maxY - minY) / 2;
+    for (var r = 0; r < raw.length; r++) {
+      poly.push([(raw[r][0] - cX) / half, (raw[r][1] - cY) / half]);
+    }
+
+    // Crisp outline particles along the parametric curve
+    for (var o = 0; o < poly.length; o++) {
+      particles.push(makeParticle(
+        poly[o][0] + (Math.random() - 0.5) * 0.022,
+        poly[o][1] + (Math.random() - 0.5) * 0.022,
+        true
+      ));
+    }
+
+    function inPoly(px, py) {
+      var inside = false;
+      for (var i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+        var xi = poly[i][0], yi = poly[i][1], xj = poly[j][0], yj = poly[j][1];
+        if (((yi > py) !== (yj > py)) && (px < (xj - xi) * (py - yi) / (yj - yi) + xi)) inside = !inside;
       }
+      return inside;
+    }
+
+    // Lighter interior fill
+    var fillTarget = 210, nFill = 0, attempts = 0;
+    while (nFill < fillTarget && attempts < 40000) {
+      attempts++;
+      var fx = -1.05 + Math.random() * 2.1;
+      var fy = -1.05 + Math.random() * 2.1;
+      if (!inPoly(fx, fy)) continue;
+      nFill++;
+      particles.push(makeParticle(fx, fy, false));
     }
   }
 
@@ -1844,10 +1897,10 @@
   }
 
   function drawGlow(cx, cy, size, beat) {
-    var glow = ctx.createRadialGradient(cx, cy, size * 0.03, cx, cy, size * (0.34 + beat * 0.03));
-    glow.addColorStop(0, 'rgba(224,36,94,0.16)');
-    glow.addColorStop(0.5, 'rgba(224,36,94,0.06)');
-    glow.addColorStop(1, 'rgba(224,36,94,0)');
+    var glow = ctx.createRadialGradient(cx, cy, size * 0.02, cx, cy, size * (0.32 + beat * 0.02));
+    glow.addColorStop(0, 'rgba(206,214,230,0.09)');
+    glow.addColorStop(0.5, 'rgba(206,214,230,0.035)');
+    glow.addColorStop(1, 'rgba(206,214,230,0)');
     ctx.fillStyle = glow;
     ctx.fillRect(0, 0, size, size);
   }
@@ -1857,23 +1910,24 @@
     var t = now * 0.001;
     ctx.clearRect(0, 0, size, size);
     var beat = reduceMotion ? 0 : Math.pow(Math.max(0, Math.sin(t * Math.PI * 1.35)), 8);
-    var scale = size * (0.3 + beat * 0.012);
+    var scale = size * (0.34 + beat * 0.014);
     var cx = size * 0.5;
-    var cy = size * 0.46;
+    var cy = size * 0.48;
     drawGlow(cx, cy, size, beat);
     for (var i = 0; i < particles.length; i++) {
       var p = particles[i];
-      var drift = reduceMotion ? 0 : Math.sin(t * p.speed + p.phase) * 0.9;
-      var px = cx + p.x * scale * (1 + beat * 0.06);
-      var py = cy - p.y * scale * (1 + beat * 0.06) + drift;
+      var wanderX = reduceMotion ? 0 : Math.sin(t * p.speed + p.phase) * p.ax;
+      var wanderY = reduceMotion ? 0 : Math.cos(t * p.speedY + p.phaseY) * p.ay;
+      var px = cx + (p.x + wanderX) * scale * (1 + beat * 0.06);
+      var py = cy - (p.y + wanderY) * scale * (1 + beat * 0.06);
       var shimmer = reduceMotion ? 0 : Math.sin(t * p.speed + p.phase) * 0.08;
       var alpha = Math.min(1, p.alpha + beat * 0.28 + shimmer);
       var radius = p.r * (0.9 + beat * 0.22);
       ctx.beginPath();
       ctx.arc(px, py, radius, 0, Math.PI * 2);
-      ctx.fillStyle = (i % 9 === 0)
-        ? 'rgba(224,36,94,' + (alpha * 0.9).toFixed(3) + ')'
-        : 'rgba(240,242,245,' + alpha.toFixed(3) + ')';
+      ctx.fillStyle = (i % 11 === 0)
+        ? 'rgba(224,36,94,' + (alpha * 0.85).toFixed(3) + ')'
+        : 'rgba(226,232,240,' + alpha.toFixed(3) + ')';
       ctx.fill();
     }
     window.requestAnimationFrame(draw);
@@ -2591,6 +2645,7 @@
   });
 
   setupDeckNavigationAutoHide();
+  setupHoverVideoPreviews();
 
   window.addEventListener('keydown', onKey, true);
   document.addEventListener('keydown', onKey, true);
@@ -2607,6 +2662,38 @@
     document.addEventListener('pointerdown', focusDeck, { passive: true });
     window.addEventListener('load', focusDeck);
     focusDeck();
+  }
+
+  function setupHoverVideoPreviews() {
+    document.querySelectorAll('.media-ph video').forEach(function (video) {
+      var host = video.closest('.media-ph');
+      if (!host) return;
+      var trigger = video.closest('.state') || video.closest('.col-media') || host;
+
+      video.muted = true;
+      video.playsInline = true;
+      video.pause();
+      try { video.currentTime = 0; } catch (_) {}
+
+      function playPreview() {
+        try {
+          var promise = video.play();
+          if (promise && typeof promise.catch === 'function') promise.catch(function () {});
+        } catch (_) {}
+      }
+
+      function pausePreview() {
+        video.pause();
+        try { video.currentTime = 0; } catch (_) {}
+      }
+
+      trigger.addEventListener('pointerenter', playPreview);
+      trigger.addEventListener('pointerleave', pausePreview);
+      trigger.addEventListener('mouseenter', playPreview);
+      trigger.addEventListener('mouseleave', pausePreview);
+      trigger.addEventListener('focusin', playPreview);
+      trigger.addEventListener('focusout', pausePreview);
+    });
   }
 
   function setupDeckNavigationAutoHide() {
