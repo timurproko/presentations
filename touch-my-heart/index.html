@@ -6,20 +6,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description" content="An XR experience for Magic Leap that takes users deep inside the human heart — realistic anatomy and the sounds of heart disease." />
   <!-- social-preview:start -->
-  <link rel="canonical" href="https://timurproko.com/ai-for-unity/" />
+  <link rel="canonical" href="https://timurproko.com/touch-my-heart/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Timur Prokopiev" />
   <meta property="og:title" content="Touch My Heart" />
   <meta property="og:description" content="An XR experience for Magic Leap that takes users deep inside the human heart — realistic anatomy and the sounds of heart disease." />
-  <meta property="og:url" content="https://timurproko.com/ai-for-unity/" />
-  <meta property="og:image" content="https://timurproko.com/assets/social/ai-for-unity.png" />
+  <meta property="og:url" content="https://timurproko.com/touch-my-heart/" />
+  <meta property="og:image" content="https://timurproko.com/assets/social/touch-my-heart.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Touch My Heart — social preview" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Touch My Heart" />
   <meta name="twitter:description" content="An XR experience for Magic Leap that takes users deep inside the human heart — realistic anatomy and the sounds of heart disease." />
-  <meta name="twitter:image" content="https://timurproko.com/assets/social/ai-for-unity.png" />
+  <meta name="twitter:image" content="https://timurproko.com/assets/social/touch-my-heart.png" />
   <!-- social-preview:end -->
 <title>Touch My Heart — XR Experience</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -1598,8 +1598,19 @@
   .media-ph.parallax-media:hover,
   .media-ph.parallax-media.is-active { z-index: 2; border-color: var(--border); box-shadow: 0 14px 38px rgba(17,17,17,0.12); transform: translateY(-2px); }
   .media-ph.parallax-media img { display: block; width: 100%; height: 100%; object-fit: cover; transform: translate3d(0,0,0) scale(1.34); transform-origin: center; transition: transform 520ms var(--ease-spring), filter var(--motion-hover) var(--ease-standard); will-change: transform; pointer-events: none; user-select: none; }
+  .media-ph video { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; }
   .media-ph.parallax-media:hover img,
   .media-ph.parallax-media.is-active img { transform: translate3d(var(--pan-x), var(--pan-y), 0) scale(1.62); filter: saturate(1.04) contrast(1.02); }
+  [data-screen-label="07 Prototype"] .split-media,
+  [data-screen-label="08 Modelling"] .split-media,
+  [data-screen-label="10 Shading"] .split-media { align-items: start; }
+  [data-screen-label="07 Prototype"] .split-media .col-media,
+  [data-screen-label="08 Modelling"] .split-media .col-media,
+  [data-screen-label="10 Shading"] .split-media .col-media { height: min(500px, 48vh); min-height: min(500px, 48vh); }
+  .media-ph.parallax-media.prototype-media { --pan-mult-x: 2.35; --pan-mult-y: 1.35; background-color: rgb(30, 30, 30); }
+  .media-ph.parallax-media.prototype-media img { object-fit: contain; transform: translate3d(0,0,0) scale(1.64); }
+  .media-ph.parallax-media.prototype-media:hover img,
+  .media-ph.parallax-media.prototype-media.is-active img { transform: translate3d(var(--pan-x), var(--pan-y), 0) scale(1.82); }
   .media-ph.parallax-media:focus { outline: none; }
   .split-media { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(36px, 4vw, 80px); align-items: center; flex: 1; min-height: 0; margin-top: clamp(24px, 2.2vw, 40px); }
   .split-media .col-text { display: flex; flex-direction: column; min-width: 0; }
@@ -1760,7 +1771,7 @@
         <li>Collects user feedback before the build</li>
       </ul>
     </div>
-    <div class="col-media"><div class="media-ph"><span class="ph-chip">prototype flow / figma</span></div></div>
+    <div class="col-media"><div class="media-ph parallax-media prototype-media" aria-label="Clickable XR prototype flow"><img src="assets/prototype.png?v=2" alt="Clickable XR prototype flow and Figma screens for Touch My Heart" loading="lazy" decoding="async" draggable="false"></div></div>
   </div>
 </section>
 
@@ -1771,7 +1782,7 @@
     <div class="col-text">
       <p class="deck-subhead" style="margin-top:0">A non-destructive procedural workflow drives the heart model — realistic enough for medicine, flexible enough to refine each disease animation without rebuilding.</p>
     </div>
-    <div class="col-media"><div class="media-ph"><span class="ph-chip">procedural node graph</span></div></div>
+    <div class="col-media"><div class="media-ph" aria-label="Procedural heart wireframe modelling video"><video src="assets/wireframe.mp4" autoplay muted loop playsinline preload="metadata"></video></div></div>
   </div>
 </section>
 
@@ -1792,7 +1803,7 @@
     <div class="col-text">
       <p class="deck-subhead" style="margin-top:0">Procedural shader graphs defined the ultimate appearance and texture for real-time — including interactive slicing of the heart across any axis.</p>
     </div>
-    <div class="col-media"><div class="media-ph"><span class="ph-chip">shader graph / sliced heart</span></div></div>
+    <div class="col-media"><div class="media-ph" aria-label="Real-time rendered heart shader preview video"><video src="assets/render.mp4" autoplay muted loop playsinline preload="metadata"></video></div></div>
   </div>
 </section>
 
@@ -2115,8 +2126,10 @@
         if (!rect.width || !rect.height) return;
         var nx = ((e.clientX - rect.left) / rect.width) - 0.5;
         var ny = ((e.clientY - rect.top) / rect.height) - 0.5;
-        media.style.setProperty('--pan-x', (nx * -150).toFixed(1) + 'px');
-        media.style.setProperty('--pan-y', (ny * -44).toFixed(1) + 'px');
+        var multX = parseFloat(getComputedStyle(media).getPropertyValue('--pan-mult-x')) || 1;
+        var multY = parseFloat(getComputedStyle(media).getPropertyValue('--pan-mult-y')) || 1;
+        media.style.setProperty('--pan-x', (nx * -150 * multX).toFixed(1) + 'px');
+        media.style.setProperty('--pan-y', (ny * -44 * multY).toFixed(1) + 'px');
         media.classList.add('is-active');
       }
       function reset() {
