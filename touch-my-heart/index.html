@@ -51,6 +51,7 @@
     --bg: #f8f8f9;
     --surface: #ffffff;
     --fg: #111111;
+    --landing-bg: #170609;
     --muted: #72747a;
     --border: #e4e6ea;
     --accent: #e0245e;
@@ -68,7 +69,7 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { height: 100%; overflow: hidden; background: var(--bg); }
-  html.deck-starts-on-dark { background: var(--fg); }
+  html.deck-starts-on-dark { background: var(--landing-bg); }
   html, body { height: 100%; width: 100%; }
   body {
     background: var(--bg);
@@ -83,8 +84,8 @@
     scrollbar-width: none;
     transition: background-color 720ms var(--ease-standard);
   }
-  body.chrome-on-dark,
-  html.deck-starts-on-dark body.chrome-boot { background: var(--fg); }
+  body.chrome-on-dark { background: var(--fg); }
+  html.deck-starts-on-dark body.chrome-boot { background: var(--landing-bg); }
   html.deck-starts-on-light body.chrome-boot .slide.dark { visibility: hidden; }
   body::-webkit-scrollbar { display: none; }
   .slide {
@@ -105,6 +106,7 @@
     container-type: inline-size;
   }
   .slide.dark { background: var(--fg); color: var(--bg); --border: #2a2a2a; --muted: #a0a0a0; }
+  .slide.hero.dark { background: radial-gradient(circle at 50% 42%, #250910 0%, #170609 48%, #110507 100%); }
   .slide.hero { justify-content: center; padding: clamp(48px, 5vw, 96px) clamp(80px, 10vw, 192px); }
   .slide.center { text-align: center; align-items: center; }
   .kicker { font-family: var(--font-mono); font-size: 22px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 48px; }
